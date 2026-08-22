@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InfoEdit: Probing Global Layout Reasoning in Infographic Editing</title>
+  <meta name="description"
+    content="InfoEdit is a benchmark of 1,000 infographics and 4,000 editing instructions that probes reflow — global layout reasoning — in infographic editing across eight frontier image editors.">
+  <meta property="og:title" content="InfoEdit: Probing Global Layout Reasoning in Infographic Editing">
+  <meta property="og:description"
+    content="A benchmark of 1,000 infographics across eight logical-relation families, 4,000 editing instructions, and a reflow-aware evaluation protocol.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="static/images/framework.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg?v=2">
+  <link rel="alternate icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#hero" class="info-badge"><img class="badge-icon" src="static/images/favicon.svg?v=2" alt=""><span
+          class="badge-mark">InfoEdit</span></a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#benchmark">Benchmark</a></li>
+          <li><a href="#tasks">Tasks</a></li>
+          <li><a href="#evaluation">Evaluation</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#findings">Key Findings</a></li>
+          <li><a href="#failures">Failure Cases</a></li>
+          <li><a href="#citation">Citation</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ==================== HERO ==================== -->
+    <section id="hero" class="content-section hero-section">
+      <div class="section-container">
+        <div class="title-block">
+          <div class="title-with-logo">
+            <img class="title-logo" src="static/images/favicon.svg?v=2" alt="InfoEdit logo">
+            <h1 class="main-title"><span class="title-mark">InfoEdit</span></h1>
+          </div>
+          <p class="subtitle">Probing Global Layout Reasoning in Infographic Editing</p>
+        </div>
+
+        <div class="authors-list">
+          <p class="author-line">
+            <span class="author">Cheng Yang<sup class="affiliation-marker">1,*</sup></span>,
+            <span class="author">Chufan Shi<sup class="affiliation-marker">2,*</sup></span>,
+            <span class="author">Huijuan Wang<sup class="affiliation-marker">2,*</sup></span>,
+            <span class="author">Bo Shui<sup class="affiliation-marker">3</sup></span>,
+            <span class="author">Yaokang Wu<sup class="affiliation-marker">4</sup></span>
+          </p>
+          <p class="author-line">
+            <span class="author">Muzi Tao<sup class="affiliation-marker">2</sup></span>,
+            <span class="author">Yibo Yan<sup class="affiliation-marker">2</sup></span>,
+            <span class="author">Xuezhe Ma<sup class="affiliation-marker">2</sup></span>,
+            <span class="author">Taylor Berg-Kirkpatrick<sup class="affiliation-marker">1</sup></span>
+          </p>
+          <p class="affiliations">
+            <span class="affil"><sup class="affiliation-marker">1</sup>University of California San Diego</span>
+            <span class="affil"><sup class="affiliation-marker">2</sup>University of Southern California</span>
+          </p>
+          <p class="affiliations">
+            <span class="affil"><sup class="affiliation-marker">3</sup>University of Illinois Urbana-Champaign</span>
+            <span class="affil"><sup class="affiliation-marker">4</sup>Carnegie Mellon University</span>
+          </p>
+          <p class="equal-contribution">*Equal contribution</p>
+          <p class="contact">
+            <a href="mailto:chy085@ucsd.edu">chy085@ucsd.edu</a>&ensp;·&ensp;<a
+              href="mailto:chufansh@usc.edu">chufansh@usc.edu</a>&ensp;·&ensp;<a
+              href="mailto:huijuanw@usc.edu">huijuanw@usc.edu</a>
+          </p>
+        </div>
+
+        <div class="resources-buttons">
+          <a class="cta-button primary soon" href="#" aria-disabled="true" onclick="return false;">
+            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6 2h8l6 6v14a0 0 0 0 1 0 0H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 1.5V9h5.5L14 3.5zM8 13h8v1.6H8V13zm0 4h8v1.6H8V17z" />
+            </svg>
+            <span>Paper</span><span class="soon-tag">soon</span>
+          </a>
+          <a class="cta-button soon" href="#" aria-disabled="true" onclick="return false;">
+            <svg class="button-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            <span>Code</span><span class="soon-tag">soon</span>
+          </a>
+          <a class="cta-button soon" href="#" aria-disabled="true" onclick="return false;">
+            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3c4.42 0 8 1.34 8 3v12c0 1.66-3.58 3-8 3s-8-1.34-8-3V6c0-1.66 3.58-3 8-3zm0 2c-3.42 0-6 .9-6 1.5S8.58 8 12 8s6-.9 6-1.5S15.42 5 12 5zm6 4.4c-1.5.7-3.7 1.1-6 1.1s-4.5-.4-6-1.1V12c0 .6 2.58 1.5 6 1.5s6-.9 6-1.5V9.4zm0 5c-1.5.7-3.7 1.1-6 1.1s-4.5-.4-6-1.1V18c0 .6 2.58 1.5 6 1.5s6-.9 6-1.5v-3.6z" />
+            </svg>
+            <span>Dataset</span><span class="soon-tag">soon</span>
+          </a>
+          <a class="cta-button" href="#citation">
+            <svg class="button-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.5 6h3.2l-1.6 5.1H12L8.4 18l.9-5H6.3L7.5 6zm7.8 0h3.2l-1.6 5.1h2.9L16.2 18l.9-5h-3l1.2-7z" />
+            </svg>
+            <span>BibTeX</span>
+          </a>
+        </div>
+
+        <div class="tldr reveal">
+          <h3>tl;dr</h3>
+          <p>
+            InfoEdit is the first benchmark for infographic editing, and it targets the capability
+            existing benchmarks rarely measure: reflow. We evaluate both pathways: pixel-level
+            image editors, and code-level editing over the HTML/PowerPoint source. Neither works well.
+            The best pixel-level editor reaches 62.0% average success rate and the best code-level system
+            61.6%, while most editors fall below 7%.
+          </p>
+        </div>
+
+        <figure class="figure framed reveal" style="margin-top:2.5rem;">
+          <img src="static/images/scenario.jpg"
+            alt="A vibe-design workflow: a user asks an image editor to add a missing step to an infographic, and the surrounding nodes and connectors must reflow.">
+          <figcaption>
+            <b>A typical “vibe-design” workflow with structured visual content.</b> A user asks an image
+            editor to add a missing step to an infographic. The instruction names one element, but the
+            surrounding nodes and connectors must all reflow for the result to be usable. InfoEdit measures
+            whether current editors can perform this reflow reliably.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ==================== ABSTRACT ==================== -->
+    <section id="abstract" class="content-section alt-background">
+      <div class="section-container">
+        <span class="section-eyebrow">Abstract</span>
+        <h2 class="section-title">Reflow is the missing capability</h2>
+        <div class="abstract-box reveal">
+          <p>
+            Multimodal foundation models edit natural photographs at production quality, yet the same models
+            struggle with structured visual content such as infographics. Unlike photographs, infographics
+            encode information through logical relations; editing one element often requires surrounding
+            elements to be adapted. We refer to this global layout reasoning capability as
+            <span class="term">reflow</span>. Existing image-editing benchmarks neither provide a dedicated
+            setting for structured visual content nor evaluate the reflow capability.
+          </p>
+          <p>
+            We introduce <b>InfoEdit</b>, a novel benchmark of 1,000 infographics across eight
+            logical-relation families, paired with 4,000 editing instructions across four editing tasks, and
+            a reflow-aware evaluation protocol. Across eight frontier editors, only GPT-Image-2 clears 60%
+            average success rate; most models fall below 7%, and no editor exceeds 35% on the
+            Swap-Block task even with perfect target localization. We further show that code-level
+            editing can match the strongest pixel-level editor, revealing complementary strengths across
+            tasks. InfoEdit identifies reflow as a central challenge in structured visual content editing and
+            provides a diagnostic benchmark to facilitate future progress.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== OVERVIEW ==================== -->
+    <section id="overview" class="content-section">
+      <div class="section-container wide">
+        <span class="section-eyebrow">01 — Overview</span>
+        <h2 class="section-title">What InfoEdit measures</h2>
+        <p class="section-description">
+          Given an original infographic <b>X</b> and an instruction <b>I</b> that names a structural change,
+          an editor must produce <b>X′</b> that satisfies two predicates at once: the named change is
+          faithfully executed, and every element the instruction did <em>not</em> mention survives — free to
+          reflow to accommodate the change.
+        </p>
+
+        <div class="card-grid cols-3 reveal">
+          <div class="card">
+            <h4><span class="card-index">C</span>Edit Compliance</h4>
+            <p>The change named by the instruction is executed on its target: the right element, at the right
+              anchor, with its content fully rendered inside the canvas.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">P</span>Content Preservation</h4>
+            <p>Every other element of the source survives intact. Repositioning, resizing, re-wrapping and
+              connector rerouting are <em>allowed</em> — that is reflow, not failure.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">SR</span>Success Rate</h4>
+            <p>An edit counts as a success only when both predicates hold. The decomposition exposes correct
+              edits that silently damage unmentioned neighbors.</p>
+          </div>
+        </div>
+
+        <figure class="figure framed reveal" style="margin-top:2.5rem;">
+          <img src="static/images/framework.jpg"
+            alt="Overview of InfoEdit: dataset of eight logical-relation families, four editing tasks, execution pipeline, and MLLM-as-judge evaluation on edit compliance and content preservation.">
+          <figcaption>
+            <b>Overview of InfoEdit.</b> We curate 1,000 infographics covering eight logical-relation
+            families (left), annotate four editing tasks for each infographic (middle), and evaluate model
+            outputs on two binary aspects — edit compliance and content preservation (right).
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ==================== BENCHMARK ==================== -->
+    <section id="benchmark" class="content-section alt-background">
+      <div class="section-container wide">
+        <span class="section-eyebrow">02 — Benchmark</span>
+        <h2 class="section-title">1,000 infographics, eight logical relations</h2>
+        <p class="section-description">
+          Every infographic is topically realistic, aesthetically credible, and — crucially — logically
+          structured: it conveys information through visual logical-relation components. Each family imposes
+          its own <b>reflow contract</b> that any valid edit must satisfy. Each infographic ships with an
+          editable, structurally addressable source file: 800 in HTML/CSS and 200 in PowerPoint.
+        </p>
+
+        <div class="tax-explorer reveal" id="tax-explorer">
+          <div class="tax-tabs" id="tax-tabs" role="tablist"></div>
+          <div class="tax-body">
+            <div class="tax-figure"><img id="tax-img" src="static/images/gallery/list.jpg"
+                alt="Example of the selected logical-relation family"></div>
+            <div class="tax-info">
+              <h4 id="tax-name">List</h4>
+              <p class="tax-stats" id="tax-stats"></p>
+              <p class="tax-desc" id="tax-desc"></p>
+              <div class="tax-contract"><b>Reflow contract.</b> <span id="tax-contract"></span></div>
+            </div>
+          </div>
+        </div>
+        <p class="table-caption" style="text-align:center;">
+          Family annotations are <b>not mutually exclusive</b>: 81% of infographics compose two to six
+          families on one canvas, so the shares above sum to more than 100%.
+        </p>
+
+        <h3 class="subsection-title">Diversity and coverage</h3>
+        <figure class="figure reveal">
+          <img src="static/images/dataset_stats.png"
+            alt="Three charts: count of infographics by number of logical-relation families, frequency of each family, and distribution by aspect ratio.">
+          <figcaption>
+            <b>Distributional summary of InfoEdit.</b> (a) Distinct logical-relation families per
+            infographic: 19% contain one, 81% contain two to six. (b) Fraction of infographics containing
+            each family. (c) Source aspect-ratio distribution over eight ratios, spanning landscape, portrait
+            and square canvases.
+          </figcaption>
+        </figure>
+
+        <h3 class="subsection-title">Annotation pipeline</h3>
+        <p class="body-text" style="text-align:center;">
+          Five stages, with expert annotators in the loop at every step.
+        </p>
+        <div class="pipeline reveal">
+          <div class="pipeline-step">
+            <span class="step-badge">STAGE 1</span>
+            <div>
+              <h4>Topic sourcing</h4>
+              <p>We define 31 topic categories where infographics are commonly produced (e.g. companies, athletes) and
+                prompt Claude-Opus-4.7, Gemini-3.1-Pro and GPT-5.4 to iteratively enumerate 200 concrete topics per
+                category — 6,200 candidate topics.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-badge">STAGE 2</span>
+            <div>
+              <h4>Visual reference collection</h4>
+              <p>For each candidate topic we generate a reference image with Nanobanana-Pro and GPT-Image-1.5.
+                References supply the color palette only, never content to reproduce. Expert annotators select 1,000
+                aesthetically coherent, topic-faithful references.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-badge">STAGE 3</span>
+            <div>
+              <h4>Logical template construction</h4>
+              <p>We build a library of 79 templates instantiating the eight families. Each template has two
+                implementations: an HTML version exposing nodes, edges and containers as addressable DOM elements, and a
+                PowerPoint version using named vector shapes and connectors.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-badge">STAGE 4</span>
+            <div>
+              <h4>Infographic composition</h4>
+              <p>Each infographic transfers a reference palette onto selected templates. The HTML track is
+                model-assisted (a styling pass and a content pass with Claude-Opus-4.7, then annotator post-editing);
+                the PowerPoint track is authored fully manually.</p>
+            </div>
+          </div>
+          <div class="pipeline-step">
+            <span class="step-badge">STAGE 5</span>
+            <div>
+              <h4>Quality control</h4>
+              <p>A second annotator reviews every infographic for structural integrity (no overflow or broken
+                connectors), stylistic faithfulness (palette matches the reference), and content completeness (all
+                fields topic-relevant and role-compatible).</p>
+            </div>
+          </div>
+        </div>
+
+        <details class="disclosure reveal">
+          <summary>Template library — 79 templates across the eight families</summary>
+          <div class="disclosure-body">
+            <div class="table-wrapper" style="margin-top:0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="model-col">Family</th>
+                    <th>#Templates</th>
+                    <th class="col-sep model-col">Family</th>
+                    <th>#Templates</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="model-col">List</td>
+                    <td>16</td>
+                    <td class="col-sep model-col">Matrix</td>
+                    <td>6</td>
+                  </tr>
+                  <tr>
+                    <td class="model-col">Process</td>
+                    <td>16</td>
+                    <td class="col-sep model-col">Pyramid</td>
+                    <td>6</td>
+                  </tr>
+                  <tr>
+                    <td class="model-col">Relationship</td>
+                    <td>15</td>
+                    <td class="col-sep model-col">Hierarchy</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <td class="model-col">Cycle</td>
+                    <td>7</td>
+                    <td class="col-sep model-col">Picture</td>
+                    <td>9</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td class="model-col"><b>Total</b></td>
+                    <td colspan="3" style="text-align:left;padding-left:1rem;"><b>79 templates</b>, each implemented in
+                      both HTML and PowerPoint</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <h3 class="subsection-title">Data examples</h3>
+        <p class="body-text" style="text-align:center;">
+          Each example shows the source infographic, its instruction, and the expected versus an unexpected
+          edited result. Click any panel to open it full size.
+        </p>
+        <div class="card-grid cols-2 reveal" style="gap:0.9rem;">
+          <a class="card" style="padding:0.6rem;" href="static/images/examples/143.jpg" target="_blank"
+            rel="noopener"><img src="static/images/examples/143.jpg"
+              alt="InfoEdit data example: a Process infographic with its editing instruction and expected/unexpected edits"
+              style="border-radius:8px;"></a>
+          <a class="card" style="padding:0.6rem;" href="static/images/examples/85.jpg" target="_blank"
+            rel="noopener"><img src="static/images/examples/85.jpg"
+              alt="InfoEdit data example: a multi-family city infographic with its editing instruction and expected/unexpected edits"
+              style="border-radius:8px;"></a>
+          <a class="card" style="padding:0.6rem;" href="static/images/examples/108.jpg" target="_blank"
+            rel="noopener"><img src="static/images/examples/108.jpg"
+              alt="InfoEdit data example: a dark-themed infographic with its editing instruction and expected/unexpected edits"
+              style="border-radius:8px;"></a>
+          <a class="card" style="padding:0.6rem;" href="static/images/examples/536.jpg" target="_blank"
+            rel="noopener"><img src="static/images/examples/536.jpg"
+              alt="InfoEdit data example: a Reshape-Canvas instruction with its expected and unexpected edited results"
+              style="border-radius:8px;"></a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TASKS ==================== -->
+    <section id="tasks" class="content-section">
+      <div class="section-container wide">
+        <span class="section-eyebrow">03 — Editing Tasks</span>
+        <h2 class="section-title">Four tasks, increasing perturbation scope</h2>
+        <p class="section-description">
+          From a text-level change to a canvas-level restructuring. For each of the 1,000 infographics,
+          annotators write one instruction per task — 4,000 pairs in total — and every instruction is
+          verified to be feasible and <b>reflow-inducing</b>.
+        </p>
+
+        <div class="card-grid cols-4 reveal">
+          <div class="card">
+            <h4><span class="card-index">1</span>Expand-Text</h4>
+            <p>Lengthens the text of one target element, forcing the host to grow while its neighbors absorb
+              the displacement through reflow.</p>
+            <span class="card-meta">Magnitude: 5–10 / 11–20 / 21–30 appended words</span>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">2</span>Insert-Element</h4>
+            <p>Adds one or more new elements into an existing logical-relation block, so the host structure
+              must re-route connectors and redistribute space among siblings.</p>
+            <span class="card-meta">Magnitude: 1 / 2–3 / 4–5 inserted elements</span>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">3</span>Swap-Block</h4>
+            <p>Exchanges the canvas positions of two logical-relation blocks as whole units, requiring the
+              rest of the canvas to resize and re-align around the new arrangement.</p>
+            <span class="card-meta">Magnitude: 1 / 2 / 3 swapped block pairs</span>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">4</span>Reshape-Canvas</h4>
+            <p>Re-renders the infographic at a different aspect ratio, demanding a canvas-level reflow in
+              which every block is re-positioned, re-scaled and re-aligned.</p>
+            <span class="card-meta">No discrete magnitude axis</span>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Instruction annotation</h3>
+        <div class="card-grid cols-3 reveal">
+          <div class="card">
+            <h4><span class="card-index">i</span>Spatial coupling</h4>
+            <p>Targets sit in regions where the edit affects nearby nodes, cards, text fields or connectors —
+              forcing displacement, resizing, re-wrapping, re-alignment or rerouting.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">ii</span>Shape-sensitive anchoring</h4>
+            <p>Targets are drawn from shaped or connected relation instances, such as pyramid tiers or
+              hierarchy branches, to test diverse geometry and connector structure.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">iii</span>Coverage</h4>
+            <p>The four instructions for each infographic cover different canvas regions and different
+              logical-relation families.</p>
+          </div>
+        </div>
+
+        <details class="disclosure reveal">
+          <summary>Difficulty-level statistics — counts over 1,000 instructions per task</summary>
+          <div class="disclosure-body">
+            <div class="table-wrapper" style="margin-top:0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th class="model-col">Task</th>
+                    <th>Magnitude bucket</th>
+                    <th>#Samples</th>
+                    <th>Ratio</th>
+                    <th>Difficulty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="model-col" rowspan="5">Expand-Text</td>
+                    <td>5–10 words</td>
+                    <td>285</td>
+                    <td>28.50%</td>
+                    <td>Easy</td>
+                  </tr>
+                  <tr>
+                    <td>11–15 words</td>
+                    <td>302</td>
+                    <td>30.20%</td>
+                    <td>Medium</td>
+                  </tr>
+                  <tr>
+                    <td>16–20 words</td>
+                    <td>205</td>
+                    <td>20.50%</td>
+                    <td>Medium</td>
+                  </tr>
+                  <tr>
+                    <td>21–25 words</td>
+                    <td>99</td>
+                    <td>9.90%</td>
+                    <td>Hard</td>
+                  </tr>
+                  <tr>
+                    <td>26–30 words</td>
+                    <td>109</td>
+                    <td>10.90%</td>
+                    <td>Hard</td>
+                  </tr>
+                  <tr>
+                    <td class="model-col" rowspan="5">Insert-Element</td>
+                    <td>1 element</td>
+                    <td>170</td>
+                    <td>17.00%</td>
+                    <td>Easy</td>
+                  </tr>
+                  <tr>
+                    <td>2 elements</td>
+                    <td>323</td>
+                    <td>32.30%</td>
+                    <td>Medium</td>
+                  </tr>
+                  <tr>
+                    <td>3 elements</td>
+                    <td>257</td>
+                    <td>25.70%</td>
+                    <td>Medium</td>
+                  </tr>
+                  <tr>
+                    <td>4 elements</td>
+                    <td>174</td>
+                    <td>17.40%</td>
+                    <td>Hard</td>
+                  </tr>
+                  <tr>
+                    <td>5 elements</td>
+                    <td>76</td>
+                    <td>7.60%</td>
+                    <td>Hard</td>
+                  </tr>
+                  <tr>
+                    <td class="model-col" rowspan="3">Swap-Block</td>
+                    <td>1 pair</td>
+                    <td>432</td>
+                    <td>43.20%</td>
+                    <td>Easy</td>
+                  </tr>
+                  <tr>
+                    <td>2 pairs</td>
+                    <td>420</td>
+                    <td>42.00%</td>
+                    <td>Medium</td>
+                  </tr>
+                  <tr>
+                    <td>3 pairs</td>
+                    <td>148</td>
+                    <td>14.80%</td>
+                    <td>Hard</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ==================== EVALUATION ==================== -->
+    <section id="evaluation" class="content-section alt-background">
+      <div class="section-container">
+        <span class="section-eyebrow">04 — Evaluation Protocol</span>
+        <h2 class="section-title">Reflow-aware judging</h2>
+        <p class="section-description">
+          For each <span class="mono">(X, I, X′)</span> triple we prompt an MLLM with the original image, the
+          edited image and the instruction, using a task-specific rubric that reflects the edit's reflow
+          contract. The judge returns a JSON verdict with binary <b>edit compliance</b> and
+          <b>content preservation</b> fields, plus an overall verdict equal to their conjunction.
+        </p>
+
+        <div class="card-grid cols-2 reveal">
+          <div class="card">
+            <h4><span class="card-index">EC</span>Edit Compliance</h4>
+            <p>
+              <b>Expand-Text</b> requires a moderately longer, on-topic body text fully rendered inside the
+              canvas. <b>Insert-Element</b> requires the new element at the named location with its content
+              fully rendered. <b>Swap-Block</b> requires the two named blocks to exchange canvas locations as
+              whole units, each carrying its content unchanged. <b>Reshape-Canvas</b> requires the canvas to
+              match the target aspect ratio.
+            </p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">CP</span>Content Preservation</h4>
+            <p>
+              Because InfoEdit instructions are reflow-inducing, CP does <em>not</em> require pixel-level
+              immobility. It checks whether unedited source content remains intact after necessary reflow —
+              repositioning, resizing, re-alignment and connector rerouting are all allowed. Deletion,
+              off-canvas displacement, cropping, occlusion, rewriting, style drift and broken structural
+              links count as failures.
+            </p>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Is the judge trustworthy?</h3>
+        <p class="body-text">
+          We compare judge verdicts with expert human judgments across model capability levels. For
+          GPT-Image-2 we sample 800 triples — exactly 200 per editing task — and three expert annotators
+          independently label each as success or failure, with the human majority as ground truth.
+        </p>
+        <div class="card-grid cols-3 reveal">
+          <div class="card">
+            <h4><span class="card-index">✓</span>0.920 agreement</h4>
+            <p>Gemini-3.1-Pro agrees with the human majority on 92.0% of GPT-Image-2 cases, against 0.940
+              inter-annotator agreement. Agreement is stable across tasks (0.905–0.930) and across easy, medium
+              and hard edits (0.943 / 0.912 / 0.890).</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">⇄</span>Judge-independent</h4>
+            <p>Replacing Gemini-3.1-Pro with the cross-vendor Claude-Opus-4.7 yields 0.914 human agreement on
+              GPT-Image-2 outputs and 0.928 on Nanobanana-2 — close to Gemini's 0.920 and 0.934.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">σ</span>Run-stable</h4>
+            <p>Across five repeated Gemini-3.1-Pro evaluations, agreement is 0.924 ± 0.007 on GPT-Image-2 and
+              0.936 ± 0.008 on Nanobanana-2. Conclusions do not hinge on a single output model, judge family or
+              evaluation run.</p>
+          </div>
+        </div>
+
+        <details class="disclosure reveal">
+          <summary>MLLM-as-a-judge prompts — one rubric per editing task</summary>
+          <div class="disclosure-body">
+            <div class="prompt-grid">
+              <a class="prompt-thumb" href="static/images/tasks/expand_text.jpg" target="_blank" rel="noopener"><img
+                  src="static/images/tasks/expand_text.jpg" alt="Judge prompt for Expand-Text"><span>Expand-Text
+                  rubric</span></a>
+              <a class="prompt-thumb" href="static/images/tasks/insert_element.jpg" target="_blank" rel="noopener"><img
+                  src="static/images/tasks/insert_element.jpg"
+                  alt="Judge prompt for Insert-Element"><span>Insert-Element rubric</span></a>
+              <a class="prompt-thumb" href="static/images/tasks/swap_block.jpg" target="_blank" rel="noopener"><img
+                  src="static/images/tasks/swap_block.jpg" alt="Judge prompt for Swap-Block"><span>Swap-Block
+                  rubric</span></a>
+              <a class="prompt-thumb" href="static/images/tasks/aspect_ratio.jpg" target="_blank" rel="noopener"><img
+                  src="static/images/tasks/aspect_ratio.jpg" alt="Judge prompt for Reshape-Canvas"><span>Reshape-Canvas
+                  rubric</span></a>
+            </div>
+            <p class="table-caption">Click a rubric to open it full size.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ==================== RESULTS ==================== -->
+    <section id="results" class="content-section">
+      <div class="section-container wide">
+        <span class="section-eyebrow">05 — Results</span>
+        <h2 class="section-title">Eight frontier editors on InfoEdit</h2>
+        <p class="section-description">
+          All models are queried with the 4,000 (infographic, instruction) pairs under each model's
+          recommended inference settings, and every triple is judged by Gemini-3.1-Pro.
+          <b>EC</b> = edit compliance, <b>CP</b> = content preservation, <b>SR</b> = success rate (their
+          conjunction). All values are percentages; <b>Avg.</b> is the mean SR across tasks.
+        </p>
+
+        <div class="table-toolbar">
+          <div class="toggle-group" id="metric-toggle">
+            <button class="active" data-mode="full">EC / CP / SR</button>
+            <button data-mode="sr">Success rate only</button>
+          </div>
+          <span class="toolbar-hint">Best value per column is highlighted.</span>
+        </div>
+
+        <div class="table-wrapper reveal">
+          <table class="data-table" id="main-results">
+            <thead>
+              <tr class="group-row">
+                <th class="model-col" rowspan="2">Model</th>
+                <th colspan="3" class="col-sep">Expand-Text</th>
+                <th colspan="3" class="col-sep">Insert-Element</th>
+                <th colspan="3" class="col-sep">Swap-Block</th>
+                <th colspan="3" class="col-sep">Reshape-Canvas</th>
+                <th rowspan="2" class="col-sep">Avg.</th>
+              </tr>
+              <tr class="metric-row">
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group-header">
+                <td colspan="14">Proprietary</td>
+              </tr>
+              <tr>
+                <td class="model-col">GPT-Image-2</td>
+                <td class="col-sep">99.0</td>
+                <td>86.7</td>
+                <td class="sr">85.9</td>
+                <td class="col-sep">85.4</td>
+                <td>80.7</td>
+                <td class="sr">72.0</td>
+                <td class="col-sep">29.0</td>
+                <td>79.2</td>
+                <td class="sr">25.5</td>
+                <td class="col-sep">96.3</td>
+                <td>65.1</td>
+                <td class="sr">64.4</td>
+                <td class="avg col-sep">62.0</td>
+              </tr>
+              <tr>
+                <td class="model-col">Nanobanana-Pro</td>
+                <td class="col-sep">87.1</td>
+                <td>64.0</td>
+                <td class="sr">57.8</td>
+                <td class="col-sep">58.8</td>
+                <td>57.8</td>
+                <td class="sr">40.2</td>
+                <td class="col-sep">36.5</td>
+                <td>79.8</td>
+                <td class="sr">32.0</td>
+                <td class="col-sep">87.2</td>
+                <td>36.9</td>
+                <td class="sr">36.4</td>
+                <td class="avg col-sep">41.6</td>
+              </tr>
+              <tr>
+                <td class="model-col">Nanobanana-2</td>
+                <td class="col-sep">85.1</td>
+                <td>58.6</td>
+                <td class="sr">52.6</td>
+                <td class="col-sep">65.3</td>
+                <td>49.4</td>
+                <td class="sr">39.0</td>
+                <td class="col-sep">30.0</td>
+                <td>72.1</td>
+                <td class="sr">24.0</td>
+                <td class="col-sep">92.0</td>
+                <td>36.4</td>
+                <td class="sr">36.3</td>
+                <td class="avg col-sep">38.0</td>
+              </tr>
+              <tr>
+                <td class="model-col">Nanobanana</td>
+                <td class="col-sep">23.2</td>
+                <td>23.8</td>
+                <td class="sr">9.2</td>
+                <td class="col-sep">3.1</td>
+                <td>14.6</td>
+                <td class="sr">0.4</td>
+                <td class="col-sep">1.6</td>
+                <td>41.8</td>
+                <td class="sr">0.9</td>
+                <td class="col-sep">25.4</td>
+                <td>8.4</td>
+                <td class="sr">3.5</td>
+                <td class="avg col-sep">3.5</td>
+              </tr>
+              <tr>
+                <td class="model-col">Seedream-5.0-Lite</td>
+                <td class="col-sep">22.1</td>
+                <td>28.0</td>
+                <td class="sr">9.1</td>
+                <td class="col-sep">12.3</td>
+                <td>11.0</td>
+                <td class="sr">1.3</td>
+                <td class="col-sep">9.3</td>
+                <td>37.0</td>
+                <td class="sr">5.2</td>
+                <td class="col-sep">64.1</td>
+                <td>4.6</td>
+                <td class="sr">4.3</td>
+                <td class="avg col-sep">5.0</td>
+              </tr>
+              <tr class="group-header">
+                <td colspan="14">Open-Weight</td>
+              </tr>
+              <tr>
+                <td class="model-col">HunyuanImage-3.0</td>
+                <td class="col-sep">21.3</td>
+                <td>34.8</td>
+                <td class="sr">12.6</td>
+                <td class="col-sep">2.5</td>
+                <td>4.3</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">0.4</td>
+                <td>16.4</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">1.4</td>
+                <td>5.2</td>
+                <td class="sr">0.0</td>
+                <td class="avg col-sep">3.2</td>
+              </tr>
+              <tr>
+                <td class="model-col">Qwen-Image-Edit</td>
+                <td class="col-sep">9.2</td>
+                <td>3.3</td>
+                <td class="sr">1.5</td>
+                <td class="col-sep">1.2</td>
+                <td>2.7</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">0.0</td>
+                <td>6.3</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">16.5</td>
+                <td>0.0</td>
+                <td class="sr">0.0</td>
+                <td class="avg col-sep">0.4</td>
+              </tr>
+              <tr>
+                <td class="model-col">FLUX.2-klein-base-9B</td>
+                <td class="col-sep">6.1</td>
+                <td>7.2</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">0.0</td>
+                <td>21.2</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">0.0</td>
+                <td>77.8</td>
+                <td class="sr">0.0</td>
+                <td class="col-sep">20.3</td>
+                <td>0.0</td>
+                <td class="sr">0.0</td>
+                <td class="avg col-sep">0.0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption">
+          <b>Editing performance of eight image-editing models on InfoEdit.</b> A clear capability gap
+          separates the frontier proprietary models from the rest: only GPT-Image-2 clears 60% average SR,
+          and all three open-weight models score 0% SR on Insert-Element, Swap-Block and Reshape-Canvas.
+          High CP alone does not imply success — FLUX.2-klein-base-9B reaches 77.8% CP on Swap-Block with
+          0.0% EC, because the requested structural edit is never completed.
+        </p>
+
+        <h3 class="subsection-title">Difficulty scales as designed</h3>
+        <figure class="figure reveal">
+          <img src="static/images/model_difficulty.png"
+            alt="Success rates across easy, medium and hard difficulty levels for Expand-Text, Insert-Element and Swap-Block.">
+          <figcaption>
+            Success rates across difficulty levels. Degradation is mildest for <b>Expand-Text</b>, where top
+            models absorb longer text by shrinking fonts or locally re-wrapping neighbors.
+            <b>Insert-Element</b> drops sharply because adding multiple elements requires redistributing space
+            and maintaining logical-relation consistency. <b>Swap-Block</b> is hardest at every level.
+          </figcaption>
+        </figure>
+
+        <h3 class="subsection-title">Where the failures concentrate</h3>
+        <figure class="figure reveal">
+          <img src="static/images/error_breakdown_static.png"
+            alt="Distribution of failure types per task, split into edit compliance failures and content preservation failures.">
+          <figcaption>
+            <b>Distribution of failure types per task</b> for GPT-Image-2, the strongest editor evaluated.
+            Misplacement dominates the structurally demanding tasks (79% of Swap-Block failures, 42% of
+            Insert-Element failures); Expand-Text fails almost entirely on preservation (EC failures ≤ 4%,
+            occlusion at 31%); Reshape-Canvas concentrates on global breakdown (47% style change, 38%
+            structural break).
+          </figcaption>
+        </figure>
+
+        <h3 class="subsection-title">Pixel-level versus code-level editing</h3>
+        <p class="body-text">
+          Because every InfoEdit infographic ships with HTML or PowerPoint source, we can run code-level
+          editing under the same protocol. <em>Code</em> feeds the model the source alone;
+          <em>Code + Image</em> adds the rendered original as visual grounding. Gemini models serve as code
+          generators, and their edited outputs are rendered back into images.
+        </p>
+        <div class="table-wrapper reveal">
+          <table class="data-table">
+            <thead>
+              <tr class="group-row">
+                <th class="model-col" rowspan="2">Model</th>
+                <th colspan="3" class="col-sep">Expand-Text</th>
+                <th colspan="3" class="col-sep">Insert-Element</th>
+                <th colspan="3" class="col-sep">Swap-Block</th>
+                <th colspan="3" class="col-sep">Reshape-Canvas</th>
+                <th rowspan="2" class="col-sep">Avg.</th>
+              </tr>
+              <tr class="metric-row">
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th class="col-sep">EC</th>
+                <th>CP</th>
+                <th>SR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group-header">
+                <td colspan="14">Code</td>
+              </tr>
+              <tr>
+                <td class="model-col">Gemini-3.1-Pro</td>
+                <td class="col-sep">85.7</td>
+                <td>72.3</td>
+                <td class="sr">67.4</td>
+                <td class="col-sep">85.6</td>
+                <td>70.7</td>
+                <td class="sr">68.0</td>
+                <td class="col-sep">68.8</td>
+                <td>77.6</td>
+                <td class="sr">59.6</td>
+                <td class="col-sep">69.4</td>
+                <td>45.2</td>
+                <td class="sr">45.1</td>
+                <td class="avg col-sep">60.0</td>
+              </tr>
+              <tr>
+                <td class="model-col">Gemini-3.5-Flash</td>
+                <td class="col-sep">83.3</td>
+                <td>68.1</td>
+                <td class="sr">64.1</td>
+                <td class="col-sep">84.1</td>
+                <td>64.5</td>
+                <td class="sr">62.0</td>
+                <td class="col-sep">60.1</td>
+                <td>79.2</td>
+                <td class="sr">54.8</td>
+                <td class="col-sep">70.4</td>
+                <td>42.4</td>
+                <td class="sr">42.2</td>
+                <td class="avg col-sep">55.8</td>
+              </tr>
+              <tr>
+                <td class="model-col">Gemini-3.1-Flash</td>
+                <td class="col-sep">79.6</td>
+                <td>65.5</td>
+                <td class="sr">60.6</td>
+                <td class="col-sep">63.4</td>
+                <td>49.1</td>
+                <td class="sr">40.2</td>
+                <td class="col-sep">56.1</td>
+                <td>72.7</td>
+                <td class="sr">47.1</td>
+                <td class="col-sep">38.0</td>
+                <td>5.3</td>
+                <td class="sr">5.2</td>
+                <td class="avg col-sep">38.3</td>
+              </tr>
+              <tr class="group-header">
+                <td colspan="14">Code + Image</td>
+              </tr>
+              <tr class="highlight-row">
+                <td class="model-col">Gemini-3.1-Pro</td>
+                <td class="col-sep">88.2</td>
+                <td>72.0</td>
+                <td class="sr">68.5</td>
+                <td class="col-sep">85.3</td>
+                <td>72.2</td>
+                <td class="sr">71.0</td>
+                <td class="col-sep">69.0</td>
+                <td>78.4</td>
+                <td class="sr">60.2</td>
+                <td class="col-sep">71.8</td>
+                <td>47.2</td>
+                <td class="sr">46.8</td>
+                <td class="avg col-sep">61.6</td>
+              </tr>
+              <tr>
+                <td class="model-col">Gemini-3.5-Flash</td>
+                <td class="col-sep">85.1</td>
+                <td>69.5</td>
+                <td class="sr">65.8</td>
+                <td class="col-sep">85.4</td>
+                <td>67.2</td>
+                <td class="sr">63.2</td>
+                <td class="col-sep">60.9</td>
+                <td>79.8</td>
+                <td class="sr">56.8</td>
+                <td class="col-sep">71.2</td>
+                <td>46.6</td>
+                <td class="sr">43.1</td>
+                <td class="avg col-sep">57.2</td>
+              </tr>
+              <tr>
+                <td class="model-col">Gemini-3.1-Flash</td>
+                <td class="col-sep">80.2</td>
+                <td>64.5</td>
+                <td class="sr">59.6</td>
+                <td class="col-sep">64.3</td>
+                <td>51.4</td>
+                <td class="sr">43.0</td>
+                <td class="col-sep">56.4</td>
+                <td>74.0</td>
+                <td class="sr">50.2</td>
+                <td class="col-sep">38.1</td>
+                <td>8.7</td>
+                <td class="sr">8.6</td>
+                <td class="avg col-sep">40.4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption">
+          <b>Code-level editing on InfoEdit.</b> Gemini-3.1-Pro with <em>Code + Image</em> reaches 61.6%
+          average SR, just matching GPT-Image-2's 62.0% — but the task-level pattern is not uniform.
+          GPT-Image-2 stays stronger on Expand-Text and Reshape-Canvas, while Gemini-3.1-Pro is comparable on
+          Insert-Element and much stronger on Swap-Block (EC 29.0 → 69.0, SR 25.5 → 60.2), because source
+          code makes named blocks directly addressable.
+        </p>
+
+        <h3 class="subsection-title">Is localization the bottleneck? No.</h3>
+        <p class="body-text">
+          Swap-Block failures could stem from two causes: the model cannot execute the structural verb, or it
+          cannot resolve which two blocks the instruction names. To separate them, we annotate the input image
+          with <b>interactive selection hints</b> — each swap pair marked with a bounding box and a matching
+          numeric label — and tell the model the marks are localization guidance that must not appear in the
+          output.
+        </p>
+        <div class="table-wrapper reveal" style="max-width:640px;margin-left:auto;margin-right:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="model-col">Model</th>
+                <th>Hint</th>
+                <th>EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th>ΔSR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="model-col" rowspan="2">GPT-Image-2</td>
+                <td>w/o</td>
+                <td>29.0</td>
+                <td>79.2</td>
+                <td class="sr">25.5</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>34.2</td>
+                <td>92.7</td>
+                <td class="sr">34.9</td>
+                <td class="best">+9.4</td>
+              </tr>
+              <tr>
+                <td class="model-col" rowspan="2">Nanobanana-Pro</td>
+                <td>w/o</td>
+                <td>36.5</td>
+                <td>79.8</td>
+                <td class="sr">32.0</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>39.4</td>
+                <td>83.6</td>
+                <td class="sr">35.2</td>
+                <td class="best">+3.2</td>
+              </tr>
+              <tr>
+                <td class="model-col" rowspan="2">Nanobanana-2</td>
+                <td>w/o</td>
+                <td>30.0</td>
+                <td>72.1</td>
+                <td class="sr">24.0</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>34.2</td>
+                <td>79.1</td>
+                <td class="sr">27.5</td>
+                <td class="best">+3.5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption" style="max-width:640px;margin-left:auto;margin-right:auto;">
+          <b>Effect of interactive selection hints on Swap-Block.</b> The gain is consistently modest
+          (+3.2 to +9.4 SR), and even with perfect localization no model exceeds 35% SR. The bottleneck is
+          the reflow operation itself, not target localization.
+        </p>
+        <figure class="figure framed reveal">
+          <img src="static/images/hint.jpg"
+            alt="Original infographic next to a hinted version where the two blocks to swap are marked with magenta bounding boxes labelled (1).">
+          <figcaption>
+            <b>Interactive selection hint for Swap-Block.</b> Matching numeric labels indicate the two blocks
+            to be exchanged. The boxes are used only for target localization and should not appear in the
+            edited output.
+          </figcaption>
+        </figure>
+
+        <h3 class="subsection-title">Fine-grained analysis and controls</h3>
+        <div class="card-grid cols-2 reveal">
+          <div class="card">
+            <h4><span class="card-index">◈</span>Logical-relation families</h4>
+            <p>Measured on Insert-Element, whose target attributes cleanly to a host family, GPT-Image-2 leads
+              Nanobanana-Pro and Nanobanana-2 on <em>every</em> family — the overall conclusion does not depend
+              on the non-uniform family distribution. <b>Cycle</b> is hardest: inserting a node requires
+              rerouting and re-closing an entire loop of connectors.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">&lt;/&gt;</span>Source format</h4>
+            <p>For pixel-level editors, HTML and PowerPoint behave alike (GPT-Image-2: 61.8% vs 62.5%). For
+              code-level editing the gap is huge — Gemini-3.1-Pro reaches 69.5% on HTML but 30.1% on
+              PowerPoint, because browser layout and CSS reflow do work that absolutely-positioned PowerPoint
+              shapes require explicit coordinate recomputation to achieve.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">↕</span>Reshape direction</h4>
+            <p>Breaking Reshape-Canvas down by transformation direction, landscape-to-portrait is consistently
+              the hardest: multi-column content must be compressed and reorganized into a vertical flow.</p>
+          </div>
+          <div class="card">
+            <h4><span class="card-index">⚙</span>Robustness controls</h4>
+            <p>Replacing each infographic's palette while preserving content and structure moves average SR
+              from 62.0 → 63.3 (GPT-Image-2) and 38.0 → 37.2 (Nanobanana-2). A Chinese translation pilot at the
+              editable-source level gives 62.0 → 57.7 and 38.0 → 30.8. Model ranking is unchanged in both.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KEY FINDINGS ==================== -->
+    <section id="findings" class="content-section alt-background">
+      <div class="section-container">
+        <span class="section-eyebrow">06 — Key Findings</span>
+        <h2 class="section-title">What InfoEdit reveals</h2>
+
+        <div class="findings-list reveal">
+          <div class="finding">
+            <span class="finding-num">01</span>
+            <div>
+              <h4>A capability cliff, not a gradient</h4>
+              <p>Only GPT-Image-2 clears 60% average SR (<span class="num-hl">62.0%</span>); Nanobanana-Pro and
+                Nanobanana-2 reach <span class="num-hl">41.6%</span> and <span class="num-hl">38.0%</span>; the
+                remaining five models fall at or below <span class="num-hl">7%</span>. Many models fail to
+                produce usable infographics at all.</p>
+            </div>
+          </div>
+          <div class="finding">
+            <span class="finding-num">02</span>
+            <div>
+              <h4>Swap-Block is essentially unsolved</h4>
+              <p>No editor exceeds <span class="num-hl">36.5%</span> EC or <span class="num-hl">32.0%</span> SR
+                on Swap-Block, while CP can stay comparatively high — compliance and preservation decouple when
+                whole blocks must move.</p>
+            </div>
+          </div>
+          <div class="finding">
+            <span class="finding-num">03</span>
+            <div>
+              <h4>The bottleneck is reflow, not grounding</h4>
+              <p>Marking the swap targets with bounding boxes lifts SR by only
+                <span class="num-hl">+3.2 to +9.4</span> points, and no model passes
+                <span class="num-hl">35%</span> even under perfect target localization.
+              </p>
+            </div>
+          </div>
+          <div class="finding">
+            <span class="finding-num">04</span>
+            <div>
+              <h4>Correct edits that silently break the layout</h4>
+              <p>On Reshape-Canvas the top three models achieve <span class="num-hl">87–96%</span> EC but only
+                <span class="num-hl">36–65%</span> CP. On Expand-Text, EC failures are ≤ 4% while most errors are
+                preservation failures. Grading a single overall verdict would hide this entirely.
+              </p>
+            </div>
+          </div>
+          <div class="finding">
+            <span class="finding-num">05</span>
+            <div>
+              <h4>Code-level editing is a complementary pathway</h4>
+              <p>Gemini-3.1-Pro over source code plus the rendered image reaches
+                <span class="num-hl">61.6%</span> average SR, matching GPT-Image-2's 62.0% — and more than
+                doubles Swap-Block SR (<span class="num-hl">25.5 → 60.2</span>). The two pathways have different
+                strengths, pointing toward hybrid systems.
+              </p>
+            </div>
+          </div>
+          <div class="finding">
+            <span class="finding-num">06</span>
+            <div>
+              <h4>Open-weight editors are far from the frontier</h4>
+              <p>HunyuanImage-3.0, Qwen-Image-Edit and FLUX.2-klein-base-9B reach
+                <span class="num-hl">3.2%</span>, <span class="num-hl">0.4%</span> and
+                <span class="num-hl">0.0%</span> average SR, with 0% on three of the four tasks — a concrete
+                target for improving open-weight editors.
+              </p>
+            </div>
+          </div>
+          <div class="finding">
+            <span class="finding-num">07</span>
+            <div>
+              <h4>Reflow is multi-faceted</h4>
+              <p>Insert-Element and Swap-Block stress correct placement; Expand-Text stresses neighbor-aware
+                adjustment; Reshape-Canvas stresses global style and structure preservation. Reflow is not one
+                operation but a family of them.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FAILURE CASES ==================== -->
+    <section id="failures" class="content-section">
+      <div class="section-container wide">
+        <span class="section-eyebrow">07 — Failure Gallery</span>
+        <h2 class="section-title">How reflow breaks in practice</h2>
+        <p class="section-description">
+          Representative qualitative failures, shown as before/after pairs with the exact editing instruction.
+          Unless noted, outputs come from GPT-Image-2 — the strongest editor we evaluate.
+        </p>
+
+        <div class="case-viewer reveal" id="case-viewer">
+          <div class="case-controls">
+            <label for="case-task">Task</label>
+            <select id="case-task">
+              <option value="all">All tasks</option>
+              <option value="Expand-Text">Expand-Text</option>
+              <option value="Insert-Element">Insert-Element</option>
+              <option value="Swap-Block">Swap-Block</option>
+              <option value="Reshape-Canvas">Reshape-Canvas</option>
+            </select>
+            <label for="case-pick">Case</label>
+            <select id="case-pick"></select>
+            <div class="case-nav">
+              <button id="case-prev" aria-label="Previous case">‹</button>
+              <span class="case-counter" id="case-counter">1 / 11</span>
+              <button id="case-next" aria-label="Next case">›</button>
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="case-tags" id="case-tags"></div>
+            <div class="case-image"><img id="case-img" src="static/images/errors/error_case_add_misplacement.jpg"
+                alt="Before and after comparison of a failed infographic edit"></div>
+            <p class="case-analysis" id="case-analysis"></p>
+          </div>
+        </div>
+
+        <details class="disclosure reveal">
+          <summary>Failure-mode taxonomy — nine diagnostic sub-fields</summary>
+          <div class="disclosure-body">
+            <div class="card-grid cols-3" style="margin-top:0;">
+              <div class="card">
+                <h4>Incomplete Content</h4>
+                <p>The target of an insert or text-expand is not fully rendered — icons, labels, numbers or expanded
+                  body text are truncated, clipped, or overflow the container.</p>
+              </div>
+              <div class="card">
+                <h4>Misplacement</h4>
+                <p>The target is not at the position the instruction specifies: a new element misses its relative
+                  anchor, or two blocks are not properly exchanged.</p>
+              </div>
+              <div class="card">
+                <h4>Element Loss</h4>
+                <p>One or more original elements no longer fully exist — deleted outright, pushed off the visible area,
+                  or cropped at the edges during reflow.</p>
+              </div>
+              <div class="card">
+                <h4>Occlusion</h4>
+                <p>An original element is partially or fully covered by another due to incorrect ordering or layout
+                  collisions.</p>
+              </div>
+              <div class="card">
+                <h4>Text Rewritten</h4>
+                <p>The text of non-target elements is altered or rewritten.</p>
+              </div>
+              <div class="card">
+                <h4>Style Change</h4>
+                <p>The visual styling of original elements — icons, logos, palette — is redesigned rather than
+                  preserved.</p>
+              </div>
+              <div class="card">
+                <h4>Structural Break</h4>
+                <p>Structural relationships break: redirected connectors in process flows, broken closure in cycles, or
+                  skipped indices in numbered sequences.</p>
+              </div>
+              <div class="card">
+                <h4>Content Altered</h4>
+                <p>The internal content of swapped blocks — titles, icons, text, numbers, background or style — is
+                  modified during editing.</p>
+              </div>
+              <div class="card">
+                <h4>No Re-layout</h4>
+                <p>The model fails to genuinely re-arrange the infographic for the new canvas shape, treating it as a
+                  flat image instead.</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ==================== CITATION ==================== -->
+    <section id="citation" class="content-section alt-background">
+      <div class="section-container">
+        <span class="section-eyebrow">Citation</span>
+        <h2 class="section-title">BibTeX</h2>
+        <p class="section-description">If you find InfoEdit useful in your research, please consider citing:</p>
+        <div class="citation-block reveal">
+          <button class="copy-button" id="copy-bib">Copy</button>
+          <pre id="bibtex">@article{yang2026infoedit,
+  title   = {InfoEdit: Probing Global Layout Reasoning in Infographic Editing},
+  author  = {Yang, Cheng and Shi, Chufan and Wang, Huijuan and Shui, Bo and
+             Wu, Yaokang and Tao, Muzi and Yan, Yibo and Ma, Xuezhe and
+             Berg-Kirkpatrick, Taylor},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="simple-footer">
+    <p>InfoEdit — Probing Global Layout Reasoning in Infographic Editing</p>
+    <p>UC San Diego · USC · UIUC · CMU</p>
+  </footer>
+
+  <script src="static/js/main.js"></script>
+</body>
+
+</html>
