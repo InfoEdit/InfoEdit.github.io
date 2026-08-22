@@ -41,20 +41,5 @@ static/images/           web-sized assets derived from _EMNLP_2026__InfoEdit/fig
 * **BibTeX.** `#bibtex` in `index.html` currently cites an arXiv preprint for 2026 — update the
   entry (and `journal`/`booktitle`) once the paper has a venue or arXiv id.
 * **Author links.** Author names are plain text; wrap any in `<a href="…">` to link homepages.
-
-## Regenerating image assets
-
-Assets come from `_EMNLP_2026__InfoEdit/figs`. PDFs are rasterized with `pdftocairo`, raster
-figures downscaled with `sips`:
-
-```bash
-S=_EMNLP_2026__InfoEdit/figs
-sips -s format jpeg -s formatOptions 82 -Z 2000 $S/framework.png --out static/images/framework.jpg
-pdftocairo -png -r 200 -singlefile $S/dataset_stats.pdf static/images/dataset_stats
-pdftocairo -jpeg -jpegopt quality=78 -r 110 -singlefile \
-  $S/bad_cases/error_case_add_misplacement.pdf static/images/errors/error_case_add_misplacement
-```
-
-Failure cases are listed in the `CASES` array in `static/js/main.js`; each entry names its task,
 error mode, model, image file and the failure analysis shown under the figure. The editing
 instruction is already printed inside each before/after image, so it is not repeated in HTML.
