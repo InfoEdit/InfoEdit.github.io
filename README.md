@@ -35,9 +35,10 @@ static/images/           web-sized assets derived from _EMNLP_2026__InfoEdit/fig
 
 ## Things to fill in before launch
 
-* **Hero buttons.** Paper / Code / Dataset are rendered as disabled `SOON` buttons in `index.html`.
-  To enable one, set its `href`, and drop `soon` from the class plus the `aria-disabled`,
-  `onclick` attributes and the `<span class="soon-tag">SOON</span>`.
+* **Hero buttons.** Code and Dataset now link to the GitHub repo and the Hugging Face
+  dataset. Paper is still a disabled `SOON` button in `index.html`; to enable it, set its
+  `href` and drop `soon` from the class plus the `aria-disabled`, `onclick` attributes and
+  the `<span class="soon-tag">soon</span>`.
 * **BibTeX.** `#bibtex` in `index.html` currently cites an arXiv preprint for 2026 — update the
   entry (and `journal`/`booktitle`) once the paper has a venue or arXiv id.
 * **Author links.** Author names are plain text; wrap any in `<a href="…">` to link homepages.
