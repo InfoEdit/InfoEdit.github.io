@@ -124,7 +124,7 @@
             existing benchmarks rarely measure: reflow. We evaluate both pathways: pixel-level
             image editors, and code-level editing over the HTML/PowerPoint source. Neither works well.
             The best pixel-level editor reaches 62.0% average success rate and the best code-level system
-            61.6%, while most editors fall below 7%.
+            (Kimi-K3) 67.9%, while most pixel-level editors fall below 7%.
           </p>
         </div>
 
@@ -161,7 +161,7 @@
             a reflow-aware evaluation protocol. Across eight frontier editors, only GPT-Image-2 clears 60%
             average success rate; most models fall below 7%, and no editor exceeds 35% on the
             Swap-Block task even with perfect target localization. We further show that code-level
-            editing can match the strongest pixel-level editor, revealing complementary strengths across
+            editing can surpass the strongest pixel-level editor, revealing complementary strengths across
             tasks. InfoEdit identifies reflow as a central challenge in structured visual content editing and
             provides a diagnostic benchmark to facilitate future progress.
           </p>
@@ -847,8 +847,8 @@
         <p class="body-text">
           Because every InfoEdit infographic ships with HTML or PowerPoint source, we can run code-level
           editing under the same protocol. <em>Code</em> feeds the model the source alone;
-          <em>Code + Image</em> adds the rendered original as visual grounding. Gemini and GPT models serve as
-          code generators, and their edited outputs are rendered back into images.
+          <em>Code + Image</em> adds the rendered original as visual grounding. Gemini, GPT and Kimi models serve
+          as code generators, and their edited outputs are rendered back into images.
         </p>
         <div class="table-wrapper reveal">
           <table class="data-table">
@@ -881,6 +881,38 @@
                 <td colspan="14">Code</td>
               </tr>
               <tr>
+                <td class="model-col">Kimi-K3</td>
+                <td class="col-sep">89.4</td>
+                <td>81.5</td>
+                <td class="sr">74.7</td>
+                <td class="col-sep">86.9</td>
+                <td>77.2</td>
+                <td class="sr">72.3</td>
+                <td class="col-sep">66.8</td>
+                <td>84.2</td>
+                <td class="sr">60.6</td>
+                <td class="col-sep">77.8</td>
+                <td>52.7</td>
+                <td class="sr">52.6</td>
+                <td class="avg col-sep">65.1</td>
+              </tr>
+              <tr>
+                <td class="model-col">GPT-5.6-Sol</td>
+                <td class="col-sep">87.1</td>
+                <td>80.8</td>
+                <td class="sr">73.8</td>
+                <td class="col-sep">86.8</td>
+                <td>74.5</td>
+                <td class="sr">69.2</td>
+                <td class="col-sep">66.1</td>
+                <td>81.2</td>
+                <td class="sr">56.7</td>
+                <td class="col-sep">83.7</td>
+                <td>56.3</td>
+                <td class="sr">55.6</td>
+                <td class="avg col-sep">63.8</td>
+              </tr>
+              <tr>
                 <td class="model-col">Gemini-3.1-Pro</td>
                 <td class="col-sep">85.7</td>
                 <td>72.3</td>
@@ -895,22 +927,6 @@
                 <td>45.2</td>
                 <td class="sr">45.1</td>
                 <td class="avg col-sep">60.0</td>
-              </tr>
-              <tr>
-                <td class="model-col">GPT-5.6-Sol</td>
-                <td class="col-sep">86.6</td>
-                <td>69.2</td>
-                <td class="sr">66.6</td>
-                <td class="col-sep">87.8</td>
-                <td>68.2</td>
-                <td class="sr">66.9</td>
-                <td class="col-sep">58.6</td>
-                <td>70.3</td>
-                <td class="sr">50.5</td>
-                <td class="col-sep">83.8</td>
-                <td>53.1</td>
-                <td class="sr">52.4</td>
-                <td class="avg col-sep">59.1</td>
               </tr>
               <tr>
                 <td class="model-col">Gemini-3.5-Flash</td>
@@ -948,6 +964,38 @@
                 <td colspan="14">Code + Image</td>
               </tr>
               <tr class="highlight-row">
+                <td class="model-col">Kimi-K3</td>
+                <td class="col-sep">91.6</td>
+                <td>82.5</td>
+                <td class="sr">79.1</td>
+                <td class="col-sep">90.2</td>
+                <td>82.4</td>
+                <td class="sr">77.2</td>
+                <td class="col-sep">69.4</td>
+                <td>83.2</td>
+                <td class="sr">62.8</td>
+                <td class="col-sep">76.5</td>
+                <td>53.2</td>
+                <td class="sr">52.5</td>
+                <td class="avg col-sep">67.9</td>
+              </tr>
+              <tr>
+                <td class="model-col">GPT-5.6-Sol</td>
+                <td class="col-sep">89.1</td>
+                <td>79.6</td>
+                <td class="sr">74.8</td>
+                <td class="col-sep">91.8</td>
+                <td>77.8</td>
+                <td class="sr">74.7</td>
+                <td class="col-sep">67.2</td>
+                <td>83.9</td>
+                <td class="sr">60.8</td>
+                <td class="col-sep">82.7</td>
+                <td>58.4</td>
+                <td class="sr">58.3</td>
+                <td class="avg col-sep">67.2</td>
+              </tr>
+              <tr>
                 <td class="model-col">Gemini-3.1-Pro</td>
                 <td class="col-sep">88.2</td>
                 <td>72.0</td>
@@ -962,22 +1010,6 @@
                 <td>47.2</td>
                 <td class="sr">46.8</td>
                 <td class="avg col-sep">61.6</td>
-              </tr>
-              <tr>
-                <td class="model-col">GPT-5.6-Sol</td>
-                <td class="col-sep">90.5</td>
-                <td>68.4</td>
-                <td class="sr">66.1</td>
-                <td class="col-sep">93.4</td>
-                <td>70.7</td>
-                <td class="sr">69.6</td>
-                <td class="col-sep">59.5</td>
-                <td>73.4</td>
-                <td class="sr">53.9</td>
-                <td class="col-sep">82.2</td>
-                <td>52.8</td>
-                <td class="sr">51.9</td>
-                <td class="avg col-sep">60.4</td>
               </tr>
               <tr>
                 <td class="model-col">Gemini-3.5-Flash</td>
@@ -1015,10 +1047,10 @@
           </table>
         </div>
         <p class="table-caption">
-          <b>Code-level editing on InfoEdit.</b> Gemini-3.1-Pro with <em>Code + Image</em> reaches 61.6%
-          average SR, just matching GPT-Image-2's 62.0% — but the task-level pattern is not uniform.
-          GPT-Image-2 stays stronger on Expand-Text and Reshape-Canvas, while Gemini-3.1-Pro is comparable on
-          Insert-Element and much stronger on Swap-Block (EC 29.0 → 69.0, SR 25.5 → 60.2), because source
+          <b>Code-level editing on InfoEdit.</b> Kimi-K3 with <em>Code + Image</em> reaches 67.9%
+          average SR, surpassing GPT-Image-2's 62.0% — but the task-level pattern is not uniform.
+          GPT-Image-2 stays stronger on Expand-Text and Reshape-Canvas, while Kimi-K3 is stronger on
+          Insert-Element and much stronger on Swap-Block (EC 29.0 → 69.4, SR 25.5 → 62.8), because source
           code makes named blocks directly addressable.
         </p>
 
@@ -1118,7 +1150,7 @@
           <div class="card">
             <h4><span class="card-index">&lt;/&gt;</span>Source format</h4>
             <p>For pixel-level editors, HTML and PowerPoint behave alike (GPT-Image-2: 61.8% vs 62.5%). For
-              code-level editing the gap is huge — Gemini-3.1-Pro reaches 69.5% on HTML but 30.1% on
+              code-level editing the gap is large — Kimi-K3 reaches 72.0% on HTML but 51.3% on
               PowerPoint, because browser layout and CSS reflow do work that absolutely-positioned PowerPoint
               shapes require explicit coordinate recomputation to achieve.</p>
           </div>
@@ -1187,9 +1219,9 @@
             <span class="finding-num">05</span>
             <div>
               <h4>Code-level editing is a complementary pathway</h4>
-              <p>Gemini-3.1-Pro over source code plus the rendered image reaches
-                <span class="num-hl">61.6%</span> average SR, matching GPT-Image-2's 62.0% — and more than
-                doubles Swap-Block SR (<span class="num-hl">25.5 → 60.2</span>). The two pathways have different
+              <p>Kimi-K3 over source code plus the rendered image reaches
+                <span class="num-hl">67.9%</span> average SR, surpassing GPT-Image-2's 62.0% — and more than
+                doubles Swap-Block SR (<span class="num-hl">25.5 → 62.8</span>). The two pathways have different
                 strengths, pointing toward hybrid systems.
               </p>
             </div>
