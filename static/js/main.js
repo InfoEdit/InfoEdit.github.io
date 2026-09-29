@@ -234,18 +234,7 @@
     return setMode;
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('table.results-table'), function (table) {
-    var setMode = setupResultsTable(table);
-    setMode('sr');
-    var btn = document.querySelector('.metric-switch[data-table="' + table.id + '"]');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var full = btn.getAttribute('aria-pressed') !== 'true';
-      btn.setAttribute('aria-pressed', full ? 'true' : 'false');
-      btn.textContent = full ? 'Hide EC / CP' : 'Show EC / CP';
-      setMode(full ? 'full' : 'sr');
-    });
-  });
+  Array.prototype.forEach.call(document.querySelectorAll('table.results-table'), setupResultsTable);
 
   /* ---------- failure case viewer ---------- */
   var CASES = [
