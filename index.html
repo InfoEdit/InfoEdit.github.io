@@ -264,34 +264,6 @@
           contract. The judge returns a JSON verdict with binary <b>edit compliance</b> and
           <b>content preservation</b> fields, plus an overall verdict equal to their conjunction.
         </p>
-
-        <p class="body-text">
-          <b>Is the judge trustworthy?</b> On 800 GPT-Image-2 triples (200 per task) labeled by three expert
-          annotators, Gemini-3.1-Pro agrees with the human majority on 92.0% of cases, against 0.940
-          inter-annotator agreement. A cross-vendor judge (Claude-Opus-4.7) and five repeated runs give the
-          same picture.
-        </p>
-
-        <details class="disclosure reveal">
-          <summary>MLLM-as-a-judge prompts — one rubric per editing task</summary>
-          <div class="disclosure-body">
-            <div class="prompt-grid">
-              <a class="prompt-thumb" href="static/images/tasks/expand_text.jpg" target="_blank" rel="noopener"><img
-                  src="static/images/tasks/expand_text.jpg" alt="Judge prompt for Expand-Text"><span>Expand-Text
-                  rubric</span></a>
-              <a class="prompt-thumb" href="static/images/tasks/insert_element.jpg" target="_blank" rel="noopener"><img
-                  src="static/images/tasks/insert_element.jpg"
-                  alt="Judge prompt for Insert-Element"><span>Insert-Element rubric</span></a>
-              <a class="prompt-thumb" href="static/images/tasks/swap_block.jpg" target="_blank" rel="noopener"><img
-                  src="static/images/tasks/swap_block.jpg" alt="Judge prompt for Swap-Block"><span>Swap-Block
-                  rubric</span></a>
-              <a class="prompt-thumb" href="static/images/tasks/aspect_ratio.jpg" target="_blank" rel="noopener"><img
-                  src="static/images/tasks/aspect_ratio.jpg" alt="Judge prompt for Reshape-Canvas"><span>Reshape-Canvas
-                  rubric</span></a>
-            </div>
-            <p class="table-caption">Click a rubric to open it full size.</p>
-          </div>
-        </details>
       </div>
     </section>
 
