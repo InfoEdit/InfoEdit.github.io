@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css?v=20260929b">
 </head>
 
 <body>
@@ -286,7 +286,7 @@
             <button data-mode="full">EC / CP / SR</button>
           </div>
           <span class="heat-legend">0%<span class="heat-bar"></span>100%</span>
-          <span class="toolbar-hint">Shade tracks the value; the best value per column is bold.</span>
+          <span class="toolbar-hint">Shade tracks the value; the best value per column is bold. Click a task to sort by its SR.</span>
         </div>
 
         <div class="table-wrapper results-wrap reveal">
@@ -294,11 +294,11 @@
             <thead>
               <tr class="group-row">
                 <th class="model-col" rowspan="2">Model</th>
-                <th colspan="3" class="col-sep">Expand-Text</th>
-                <th colspan="3" class="col-sep">Insert-Element</th>
-                <th colspan="3" class="col-sep">Swap-Block</th>
-                <th colspan="3" class="col-sep">Reshape-Canvas</th>
-                <th rowspan="2" class="col-sep">Avg.</th>
+                <th colspan="3" class="col-sep sortable">Expand-Text</th>
+                <th colspan="3" class="col-sep sortable">Insert-Element</th>
+                <th colspan="3" class="col-sep sortable">Swap-Block</th>
+                <th colspan="3" class="col-sep sortable">Reshape-Canvas</th>
+                <th rowspan="2" class="col-sep sortable">Avg.</th>
               </tr>
               <tr class="metric-row">
                 <th class="col-sep">EC</th>
@@ -480,7 +480,7 @@
             <button data-mode="full">EC / CP / SR</button>
           </div>
           <span class="heat-legend">0%<span class="heat-bar"></span>100%</span>
-          <span class="toolbar-hint">Shade tracks the value; the best value per column is bold.</span>
+          <span class="toolbar-hint">Shade tracks the value; the best value per column is bold. Click a task to sort by its SR.</span>
         </div>
 
         <div class="table-wrapper results-wrap reveal">
@@ -488,11 +488,11 @@
             <thead>
               <tr class="group-row">
                 <th class="model-col" rowspan="2">Model</th>
-                <th colspan="3" class="col-sep">Expand-Text</th>
-                <th colspan="3" class="col-sep">Insert-Element</th>
-                <th colspan="3" class="col-sep">Swap-Block</th>
-                <th colspan="3" class="col-sep">Reshape-Canvas</th>
-                <th rowspan="2" class="col-sep">Avg.</th>
+                <th colspan="3" class="col-sep sortable">Expand-Text</th>
+                <th colspan="3" class="col-sep sortable">Insert-Element</th>
+                <th colspan="3" class="col-sep sortable">Swap-Block</th>
+                <th colspan="3" class="col-sep sortable">Reshape-Canvas</th>
+                <th rowspan="2" class="col-sep sortable">Avg.</th>
               </tr>
               <tr class="metric-row">
                 <th class="col-sep">EC</th>
@@ -675,6 +675,25 @@
                 <td>8.7</td>
                 <td class="sr">8.6</td>
                 <td class="avg col-sep">40.4</td>
+              </tr>
+              <tr class="group-header">
+                <td colspan="14">Pixel-level reference</td>
+              </tr>
+              <tr class="ref-row">
+                <td class="model-col">GPT-Image-2</td>
+                <td class="col-sep">99.0</td>
+                <td>86.7</td>
+                <td class="sr">85.9</td>
+                <td class="col-sep">85.4</td>
+                <td>80.7</td>
+                <td class="sr">72.0</td>
+                <td class="col-sep">29.0</td>
+                <td>79.2</td>
+                <td class="sr">25.5</td>
+                <td class="col-sep">96.3</td>
+                <td>65.1</td>
+                <td class="sr">64.4</td>
+                <td class="avg col-sep">62.0</td>
               </tr>
             </tbody>
           </table>
@@ -883,7 +902,7 @@
     <p>UC San Diego · USC · UIUC · CMU</p>
   </footer>
 
-  <script src="static/js/main.js"></script>
+  <script src="static/js/main.js?v=20260929b"></script>
 </body>
 
 </html>

@@ -139,11 +139,13 @@
       table.tBodies[0].rows,
       function (r) { return !r.classList.contains('group-header'); }
     );
+    // reference rows are shown for comparison but do not compete for "best"
+    var rankedRows = dataRows.filter(function (r) { return !r.classList.contains('ref-row'); });
 
     // highlight the best value in every numeric column (12 metrics + Avg.)
     for (var c = 1; c <= 13; c++) {
       var best = -1, bestCells = [];
-      dataRows.forEach(function (r) {
+      rankedRows.forEach(function (r) {
         var cell = r.cells[c];
         if (!cell) return;
         var v = parseFloat(cell.textContent);
@@ -191,6 +193,44 @@
         });
       });
     }
+    // click a task (or Avg.) header to sort rows by that SR within each group; click again to restore
+    var body = table.tBodies[0];
+    var original = Array.prototype.slice.call(body.rows);
+    var sortCol = null;
+    Array.prototype.forEach.call(table.tHead.rows[0].querySelectorAll('th.sortable'), function (th) {
+      th.setAttribute('role', 'button');
+      th.tabIndex = 0;
+      function run() {
+        var headers = Array.prototype.slice.call(table.tHead.rows[0].cells);
+        var pos = headers.indexOf(th);            // 1..4 = tasks, 5 = Avg.
+        var col = pos === 5 ? 13 : pos * 3;       // SR column of that task
+        Array.prototype.forEach.call(table.tHead.rows[0].querySelectorAll('th.sortable'), function (o) {
+          if (o !== th) o.classList.remove('sorted');
+        });
+        if (sortCol === col) {
+          sortCol = null;
+          th.classList.remove('sorted');
+          original.forEach(function (r) { body.appendChild(r); });
+          return;
+        }
+        sortCol = col;
+        th.classList.add('sorted');
+        var groups = [], cur = null;
+        original.forEach(function (r) {
+          if (r.classList.contains('group-header') || !cur) { cur = { head: null, rows: [] }; groups.push(cur); }
+          if (r.classList.contains('group-header')) cur.head = r; else cur.rows.push(r);
+        });
+        groups.forEach(function (g) {
+          if (g.head) body.appendChild(g.head);
+          g.rows.slice().sort(function (a, b) {
+            return parseFloat(b.cells[col].textContent) - parseFloat(a.cells[col].textContent);
+          }).forEach(function (r) { body.appendChild(r); });
+        });
+      }
+      th.addEventListener('click', run);
+      th.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); run(); } });
+    });
+
     return setMode;
   }
 

@@ -630,6 +630,20 @@ table.data-table.results-table tbody tr:not(.group-header):hover td.avg {
 }
 table.results-table tr.highlight-row td.model-col { background: #fff; box-shadow: inset 3px 0 0 var(--primary-soft), inset -1px 0 0 #e9ebf2; }
 table.results-table tbody tr:last-child td { border-bottom: none; }
+table.results-table thead th.sortable { cursor: pointer; user-select: none; transition: color .15s ease; }
+table.results-table thead th.sortable:hover { color: var(--primary-soft); }
+table.results-table thead th.sortable::after {
+  content: "\2195";
+  margin-left: 0.35rem;
+  font-size: 0.75em;
+  color: #b8bdca;
+}
+table.results-table thead th.sortable.sorted { color: var(--primary-soft); }
+table.results-table thead th.sortable.sorted::after { content: "\2193"; color: var(--primary-soft); }
+table.results-table thead th.sortable:focus-visible { outline: 2px solid var(--primary-soft); outline-offset: -2px; }
+table.results-table tr.ref-row td { border-top: 1px dashed #cfd4e4; }
+table.results-table tr.ref-row td.model-col { font-style: italic; color: #6b7285; font-weight: 500; }
+table.results-table tr.ref-row td:not(.model-col) { color: #6b7285; }
 .heat-legend {
   display: inline-flex;
   align-items: center;
