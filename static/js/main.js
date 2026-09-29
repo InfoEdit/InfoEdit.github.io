@@ -154,12 +154,19 @@
       bestCells.forEach(function (cell) { cell.classList.add('best'); });
     }
 
-    // in-cell bar for the Avg. column
+    // single-hue heat: tint each numeric cell by its value, and label it for hover
+    var tasks = Array.prototype.map.call(table.tHead.rows[0].cells, function (th) { return th.textContent.trim(); });
+    var metrics = ['EC', 'CP', 'SR'];
     dataRows.forEach(function (r) {
-      var cell = r.cells[13];
-      if (!cell) return;
-      var v = parseFloat(cell.textContent);
-      if (!isNaN(v)) cell.style.setProperty('--bar', Math.max(0, Math.min(100, v)) + '%');
+      var model = r.cells[0] ? r.cells[0].textContent.trim() : '';
+      for (var c = 1; c < r.cells.length; c++) {
+        var cell = r.cells[c];
+        var v = parseFloat(cell.textContent);
+        if (isNaN(v)) continue;
+        cell.style.setProperty('--h', (Math.max(0, Math.min(100, v)) / 100).toFixed(3));
+        var label = c === 13 ? 'Average SR' : tasks[Math.ceil(c / 3)] + ' · ' + metrics[(c - 1) % 3];
+        cell.title = model + ' — ' + label + ': ' + v.toFixed(1) + '%';
+      }
     });
 
     function setMode(mode) {
@@ -191,6 +198,8 @@
     var setMode = setupResultsTable(table);
     var toggle = document.querySelector('.toggle-group[data-table="' + table.id + '"]');
     if (!toggle) return;
+    var initial = toggle.querySelector('button.active');
+    if (initial) setMode(initial.dataset.mode);
     Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (b) {
       b.addEventListener('click', function () {
         Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (o) { o.classList.remove('active'); });

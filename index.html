@@ -60,17 +60,17 @@
 
         <div class="authors-list">
           <p class="author-line">
-            <span class="author">Cheng Yang<sup class="affiliation-marker">1,*</sup></span>,
-            <span class="author">Chufan Shi<sup class="affiliation-marker">2,*</sup></span>,
-            <span class="author">Huijuan Wang<sup class="affiliation-marker">2,*</sup></span>,
-            <span class="author">Bo Shui<sup class="affiliation-marker">3</sup></span>,
+            <span class="author"><a href="https://chengyang.notion.site/aboutme" target="_blank" rel="noopener">Cheng Yang</a><sup class="affiliation-marker">1,*</sup></span>,
+            <span class="author"><a href="https://chufanshi.notion.site/aboutme" target="_blank" rel="noopener">Chufan Shi</a><sup class="affiliation-marker">2,*</sup></span>,
+            <span class="author"><a href="https://sites.google.com/usc.edu/huijuanwang" target="_blank" rel="noopener">Huijuan Wang</a><sup class="affiliation-marker">2,*</sup></span>,
+            <span class="author"><a href="https://boshui.site" target="_blank" rel="noopener">Bo Shui</a><sup class="affiliation-marker">3</sup></span>,
             <span class="author">Yaokang Wu<sup class="affiliation-marker">4</sup></span>
           </p>
           <p class="author-line">
-            <span class="author">Muzi Tao<sup class="affiliation-marker">2</sup></span>,
+            <span class="author"><a href="https://muzi-tao.github.io/" target="_blank" rel="noopener">Muzi Tao</a><sup class="affiliation-marker">2</sup></span>,
             <span class="author">Yibo Yan<sup class="affiliation-marker">2</sup></span>,
-            <span class="author">Xuezhe Ma<sup class="affiliation-marker">2</sup></span>,
-            <span class="author">Taylor Berg-Kirkpatrick<sup class="affiliation-marker">1</sup></span>
+            <span class="author"><a href="https://xuezhemax.github.io/" target="_blank" rel="noopener">Xuezhe Ma</a><sup class="affiliation-marker">2</sup></span>,
+            <span class="author"><a href="https://cseweb.ucsd.edu/~tberg/" target="_blank" rel="noopener">Taylor Berg-Kirkpatrick</a><sup class="affiliation-marker">1</sup></span>
           </p>
           <p class="affiliations">
             <span class="affil"><sup class="affiliation-marker">1</sup>University of California San Diego</span>
@@ -282,13 +282,14 @@
 
         <div class="table-toolbar">
           <div class="toggle-group" id="metric-toggle" data-table="main-results">
-            <button class="active" data-mode="full">EC / CP / SR</button>
-            <button data-mode="sr">Success rate only</button>
+            <button class="active" data-mode="sr">Success rate</button>
+            <button data-mode="full">EC / CP / SR</button>
           </div>
-          <span class="toolbar-hint">Best value per column is highlighted.</span>
+          <span class="heat-legend">0%<span class="heat-bar"></span>100%</span>
+          <span class="toolbar-hint">Shade tracks the value; the best value per column is bold.</span>
         </div>
 
-        <div class="table-wrapper reveal">
+        <div class="table-wrapper results-wrap reveal">
           <table class="data-table results-table" id="main-results">
             <thead>
               <tr class="group-row">
@@ -475,13 +476,14 @@
         </p>
         <div class="table-toolbar">
           <div class="toggle-group" data-table="code-results">
-            <button class="active" data-mode="full">EC / CP / SR</button>
-            <button data-mode="sr">Success rate only</button>
+            <button class="active" data-mode="sr">Success rate</button>
+            <button data-mode="full">EC / CP / SR</button>
           </div>
-          <span class="toolbar-hint">Best value per column is highlighted.</span>
+          <span class="heat-legend">0%<span class="heat-bar"></span>100%</span>
+          <span class="toolbar-hint">Shade tracks the value; the best value per column is bold.</span>
         </div>
 
-        <div class="table-wrapper reveal">
+        <div class="table-wrapper results-wrap reveal">
           <table class="data-table results-table" id="code-results">
             <thead>
               <tr class="group-row">
