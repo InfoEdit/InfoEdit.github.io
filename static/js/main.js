@@ -130,17 +130,18 @@
     showFamily(FAMILIES[0]);
   }
 
-  /* ---------- main results table: best-value highlight + metric toggle ---------- */
-  var mainTable = document.getElementById('main-results');
-  if (mainTable) {
+  /* ---------- results tables: best-value highlight, avg bars, metric toggle ---------- */
+  var HIDDEN = [1, 2, 4, 5, 7, 8, 10, 11];   // EC / CP cell indices
+  var SR_CELLS = [3, 6, 9, 12];
+
+  function setupResultsTable(table) {
     var dataRows = Array.prototype.filter.call(
-      mainTable.tBodies[0].rows,
+      table.tBodies[0].rows,
       function (r) { return !r.classList.contains('group-header'); }
     );
 
-    // highlight the best value in every numeric column
-    var colCount = 13; // 12 metrics + Avg.
-    for (var c = 1; c <= colCount; c++) {
+    // highlight the best value in every numeric column (12 metrics + Avg.)
+    for (var c = 1; c <= 13; c++) {
       var best = -1, bestCells = [];
       dataRows.forEach(function (r) {
         var cell = r.cells[c];
@@ -153,27 +154,29 @@
       bestCells.forEach(function (cell) { cell.classList.add('best'); });
     }
 
-    var HIDDEN = [1, 2, 4, 5, 7, 8, 10, 11];   // EC / CP cell indices
-    var SR_CELLS = [3, 6, 9, 12];
+    // in-cell bar for the Avg. column
+    dataRows.forEach(function (r) {
+      var cell = r.cells[13];
+      if (!cell) return;
+      var v = parseFloat(cell.textContent);
+      if (!isNaN(v)) cell.style.setProperty('--bar', Math.max(0, Math.min(100, v)) + '%');
+    });
 
     function setMode(mode) {
       var srOnly = mode === 'sr';
-      // header: metric row
-      var metricRow = mainTable.tHead.rows[1];
+      table.classList.toggle('sr-only', srOnly);
+      var metricRow = table.tHead.rows[1];
       Array.prototype.forEach.call(metricRow.cells, function (th, i) {
-        // metric row has 12 cells: indices 0..11 map to table columns 1..12
         var col = i + 1;
         th.style.display = srOnly && HIDDEN.indexOf(col) !== -1 ? 'none' : '';
         if (SR_CELLS.indexOf(col) !== -1) th.classList.toggle('col-sep', srOnly);
       });
-      // header: group row colspans
-      Array.prototype.forEach.call(mainTable.tHead.rows[0].cells, function (th) {
+      Array.prototype.forEach.call(table.tHead.rows[0].cells, function (th) {
         if (th.getAttribute('colspan') === '3' || th.dataset.fullspan) {
           if (!th.dataset.fullspan) th.dataset.fullspan = '3';
           th.setAttribute('colspan', srOnly ? '1' : th.dataset.fullspan);
         }
       });
-      // body
       dataRows.forEach(function (r) {
         Array.prototype.forEach.call(r.cells, function (td, i) {
           if (HIDDEN.indexOf(i) !== -1) td.style.display = srOnly ? 'none' : '';
@@ -181,18 +184,21 @@
         });
       });
     }
-
-    var toggle = document.getElementById('metric-toggle');
-    if (toggle) {
-      Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (b) {
-        b.addEventListener('click', function () {
-          Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (o) { o.classList.remove('active'); });
-          b.classList.add('active');
-          setMode(b.dataset.mode);
-        });
-      });
-    }
+    return setMode;
   }
+
+  Array.prototype.forEach.call(document.querySelectorAll('table.results-table'), function (table) {
+    var setMode = setupResultsTable(table);
+    var toggle = document.querySelector('.toggle-group[data-table="' + table.id + '"]');
+    if (!toggle) return;
+    Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (b) {
+      b.addEventListener('click', function () {
+        Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (o) { o.classList.remove('active'); });
+        b.classList.add('active');
+        setMode(b.dataset.mode);
+      });
+    });
+  });
 
   /* ---------- failure case viewer ---------- */
   var CASES = [

@@ -37,6 +37,7 @@
           <li><a href="#evaluation">Evaluation</a></li>
           <li><a href="#results">Pixel-Level</a></li>
           <li><a href="#code">Code-Level</a></li>
+          <li><a href="#analysis">Analysis</a></li>
           <li><a href="#findings">Key Findings</a></li>
           <li><a href="#citation">Citation</a></li>
         </ul>
@@ -280,7 +281,7 @@
         </p>
 
         <div class="table-toolbar">
-          <div class="toggle-group" id="metric-toggle">
+          <div class="toggle-group" id="metric-toggle" data-table="main-results">
             <button class="active" data-mode="full">EC / CP / SR</button>
             <button data-mode="sr">Success rate only</button>
           </div>
@@ -288,7 +289,7 @@
         </div>
 
         <div class="table-wrapper reveal">
-          <table class="data-table" id="main-results">
+          <table class="data-table results-table" id="main-results">
             <thead>
               <tr class="group-row">
                 <th class="model-col" rowspan="2">Model</th>
@@ -458,119 +459,8 @@
           High CP alone does not imply success — FLUX.2-klein-base-9B reaches 77.8% CP on Swap-Block with
           0.0% EC, because the requested structural edit is never completed.
         </p>
-
-        <h3 class="subsection-title">Difficulty scales as designed</h3>
-        <figure class="figure reveal">
-          <img src="static/images/model_difficulty.png"
-            alt="Success rates across easy, medium and hard difficulty levels for Expand-Text, Insert-Element and Swap-Block.">
-          <figcaption>
-            Success rates across difficulty levels. Degradation is mildest for <b>Expand-Text</b>, where top
-            models absorb longer text by shrinking fonts or locally re-wrapping neighbors.
-            <b>Insert-Element</b> drops sharply because adding multiple elements requires redistributing space
-            and maintaining logical-relation consistency. <b>Swap-Block</b> is hardest at every level.
-          </figcaption>
-        </figure>
-
-        <h3 class="subsection-title">Where the failures concentrate</h3>
-        <figure class="figure reveal">
-          <img src="static/images/error_breakdown_static.png"
-            alt="Distribution of failure types per task, split into edit compliance failures and content preservation failures.">
-          <figcaption>
-            <b>Distribution of failure types per task</b> for GPT-Image-2, the strongest editor evaluated.
-            Misplacement dominates the structurally demanding tasks (79% of Swap-Block failures, 42% of
-            Insert-Element failures); Expand-Text fails almost entirely on preservation (EC failures ≤ 4%,
-            occlusion at 31%); Reshape-Canvas concentrates on global breakdown (47% style change, 38%
-            structural break).
-          </figcaption>
-        </figure>
-
-        <h3 class="subsection-title">Is localization the bottleneck? No.</h3>
-        <p class="body-text">
-          Swap-Block failures could stem from two causes: the model cannot execute the structural verb, or it
-          cannot resolve which two blocks the instruction names. To separate them, we annotate the input image
-          with <b>interactive selection hints</b> — each swap pair marked with a bounding box and a matching
-          numeric label — and tell the model the marks are localization guidance that must not appear in the
-          output.
-        </p>
-        <div class="table-wrapper reveal" style="max-width:640px;margin-left:auto;margin-right:auto;">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th class="model-col">Model</th>
-                <th>Hint</th>
-                <th>EC</th>
-                <th>CP</th>
-                <th>SR</th>
-                <th>ΔSR</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="model-col" rowspan="2">GPT-Image-2</td>
-                <td>w/o</td>
-                <td>29.0</td>
-                <td>79.2</td>
-                <td class="sr">25.5</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>w/</td>
-                <td>34.2</td>
-                <td>92.7</td>
-                <td class="sr">34.9</td>
-                <td class="best">+9.4</td>
-              </tr>
-              <tr>
-                <td class="model-col" rowspan="2">Nanobanana-Pro</td>
-                <td>w/o</td>
-                <td>36.5</td>
-                <td>79.8</td>
-                <td class="sr">32.0</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>w/</td>
-                <td>39.4</td>
-                <td>83.6</td>
-                <td class="sr">35.2</td>
-                <td class="best">+3.2</td>
-              </tr>
-              <tr>
-                <td class="model-col" rowspan="2">Nanobanana-2</td>
-                <td>w/o</td>
-                <td>30.0</td>
-                <td>72.1</td>
-                <td class="sr">24.0</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>w/</td>
-                <td>34.2</td>
-                <td>79.1</td>
-                <td class="sr">27.5</td>
-                <td class="best">+3.5</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="table-caption" style="max-width:640px;margin-left:auto;margin-right:auto;">
-          <b>Effect of interactive selection hints on Swap-Block.</b> The gain is consistently modest
-          (+3.2 to +9.4 SR), and even with perfect localization no model exceeds 35% SR. The bottleneck is
-          the reflow operation itself, not target localization.
-        </p>
-        <figure class="figure framed reveal">
-          <img src="static/images/hint.jpg"
-            alt="Original infographic next to a hinted version where the two blocks to swap are marked with magenta bounding boxes labelled (1).">
-          <figcaption>
-            <b>Interactive selection hint for Swap-Block.</b> Matching numeric labels indicate the two blocks
-            to be exchanged. The boxes are used only for target localization and should not appear in the
-            edited output.
-          </figcaption>
-        </figure>
-
       </div>
     </section>
-
 
     <!-- ==================== CODE-LEVEL ==================== -->
     <section id="code" class="content-section alt-background">
@@ -583,8 +473,16 @@
           <em>Code + Image</em> adds the rendered original as visual grounding. Gemini, GPT and Kimi models serve
           as code generators, and their edited outputs are rendered back into images.
         </p>
+        <div class="table-toolbar">
+          <div class="toggle-group" data-table="code-results">
+            <button class="active" data-mode="full">EC / CP / SR</button>
+            <button data-mode="sr">Success rate only</button>
+          </div>
+          <span class="toolbar-hint">Best value per column is highlighted.</span>
+        </div>
+
         <div class="table-wrapper reveal">
-          <table class="data-table">
+          <table class="data-table results-table" id="code-results">
             <thead>
               <tr class="group-row">
                 <th class="model-col" rowspan="2">Model</th>
@@ -789,10 +687,126 @@
       </div>
     </section>
 
+    <!-- ==================== ANALYSIS ==================== -->
+    <section id="analysis" class="content-section">
+      <div class="section-container wide">
+        <span class="section-eyebrow">07 — Analysis</span>
+        <h2 class="section-title">Where and why editors fail</h2>
+        <h3 class="subsection-title">Difficulty scales as designed</h3>
+        <figure class="figure reveal">
+          <img src="static/images/model_difficulty.png"
+            alt="Success rates across easy, medium and hard difficulty levels for Expand-Text, Insert-Element and Swap-Block.">
+          <figcaption>
+            Success rates across difficulty levels. Degradation is mildest for <b>Expand-Text</b>, where top
+            models absorb longer text by shrinking fonts or locally re-wrapping neighbors.
+            <b>Insert-Element</b> drops sharply because adding multiple elements requires redistributing space
+            and maintaining logical-relation consistency. <b>Swap-Block</b> is hardest at every level.
+          </figcaption>
+        </figure>
+
+        <h3 class="subsection-title">Where the failures concentrate</h3>
+        <figure class="figure reveal">
+          <img src="static/images/error_breakdown_static.png"
+            alt="Distribution of failure types per task, split into edit compliance failures and content preservation failures.">
+          <figcaption>
+            <b>Distribution of failure types per task</b> for GPT-Image-2, the strongest editor evaluated.
+            Misplacement dominates the structurally demanding tasks (79% of Swap-Block failures, 42% of
+            Insert-Element failures); Expand-Text fails almost entirely on preservation (EC failures ≤ 4%,
+            occlusion at 31%); Reshape-Canvas concentrates on global breakdown (47% style change, 38%
+            structural break).
+          </figcaption>
+        </figure>
+
+        <h3 class="subsection-title">Is localization the bottleneck? No.</h3>
+        <p class="body-text">
+          Swap-Block failures could stem from two causes: the model cannot execute the structural verb, or it
+          cannot resolve which two blocks the instruction names. To separate them, we annotate the input image
+          with <b>interactive selection hints</b> — each swap pair marked with a bounding box and a matching
+          numeric label — and tell the model the marks are localization guidance that must not appear in the
+          output.
+        </p>
+        <div class="table-wrapper reveal" style="max-width:640px;margin-left:auto;margin-right:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="model-col">Model</th>
+                <th>Hint</th>
+                <th>EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th>ΔSR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="model-col" rowspan="2">GPT-Image-2</td>
+                <td>w/o</td>
+                <td>29.0</td>
+                <td>79.2</td>
+                <td class="sr">25.5</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>34.2</td>
+                <td>92.7</td>
+                <td class="sr">34.9</td>
+                <td class="best">+9.4</td>
+              </tr>
+              <tr>
+                <td class="model-col" rowspan="2">Nanobanana-Pro</td>
+                <td>w/o</td>
+                <td>36.5</td>
+                <td>79.8</td>
+                <td class="sr">32.0</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>39.4</td>
+                <td>83.6</td>
+                <td class="sr">35.2</td>
+                <td class="best">+3.2</td>
+              </tr>
+              <tr>
+                <td class="model-col" rowspan="2">Nanobanana-2</td>
+                <td>w/o</td>
+                <td>30.0</td>
+                <td>72.1</td>
+                <td class="sr">24.0</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>34.2</td>
+                <td>79.1</td>
+                <td class="sr">27.5</td>
+                <td class="best">+3.5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption" style="max-width:640px;margin-left:auto;margin-right:auto;">
+          <b>Effect of interactive selection hints on Swap-Block.</b> The gain is consistently modest
+          (+3.2 to +9.4 SR), and even with perfect localization no model exceeds 35% SR. The bottleneck is
+          the reflow operation itself, not target localization.
+        </p>
+        <figure class="figure framed reveal">
+          <img src="static/images/hint.jpg"
+            alt="Original infographic next to a hinted version where the two blocks to swap are marked with magenta bounding boxes labelled (1).">
+          <figcaption>
+            <b>Interactive selection hint for Swap-Block.</b> Matching numeric labels indicate the two blocks
+            to be exchanged. The boxes are used only for target localization and should not appear in the
+            edited output.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
     <!-- ==================== KEY FINDINGS ==================== -->
-    <section id="findings" class="content-section">
+    <section id="findings" class="content-section alt-background">
       <div class="section-container">
-        <span class="section-eyebrow">07 — Key Findings</span>
+        <span class="section-eyebrow">08 — Key Findings</span>
         <h2 class="section-title">What InfoEdit reveals</h2>
 
         <div class="findings-list reveal">
@@ -841,7 +855,7 @@
     </section>
 
     <!-- ==================== CITATION ==================== -->
-    <section id="citation" class="content-section alt-background">
+    <section id="citation" class="content-section">
       <div class="section-container">
         <span class="section-eyebrow">Citation</span>
         <h2 class="section-title">BibTeX</h2>
