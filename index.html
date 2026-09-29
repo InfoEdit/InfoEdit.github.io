@@ -5,14 +5,188 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>InfoEdit: Probing Global Layout Reasoning in Infographic Editing</title>
-  <meta name="description"
-    content="InfoEdit is a benchmark of 1,000 infographics and 4,000 editing instructions that probes reflow — global layout reasoning — in infographic editing across eight frontier image editors.">
-  <meta property="og:title" content="InfoEdit: Probing Global Layout Reasoning in Infographic Editing">
-  <meta property="og:description"
-    content="A benchmark of 1,000 infographics across eight logical-relation families, 4,000 editing instructions, and a reflow-aware evaluation protocol.">
+  <meta name="description" content="InfoEdit is a benchmark for infographic editing: 1,000 HTML and PowerPoint infographics across eight logical-relation families, 4,000 editing instructions over four tasks, and a reflow-aware MLLM-as-a-judge evaluation of global layout reasoning in pixel-level and code-level image editors.">
+  <meta name="keywords" content="visual coding, multimodal coding, InfoEdit, infographic editing, image editing benchmark, layout reasoning, reflow, structured visual content, multimodal foundation models, image editing evaluation, MLLM-as-a-judge, code-level editing, HTML infographics, PowerPoint, GPT-Image-2, Nano Banana, dataset">
+  <meta name="author" content="Cheng Yang, Chufan Shi, Huijuan Wang, Bo Shui, Yaokang Wu, Muzi Tao, Yibo Yan, Xuezhe Ma, Taylor Berg-Kirkpatrick">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://infoedit.github.io/">
+
+  <!-- Open Graph / social previews -->
   <meta property="og:type" content="website">
-  <meta property="og:image" content="static/images/framework.jpg">
+  <meta property="og:site_name" content="InfoEdit">
+  <meta property="og:url" content="https://infoedit.github.io/">
+  <meta property="og:title" content="InfoEdit: Probing Global Layout Reasoning in Infographic Editing">
+  <meta property="og:description" content="InfoEdit is a benchmark for infographic editing: 1,000 HTML and PowerPoint infographics across eight logical-relation families, 4,000 editing instructions over four tasks, and a reflow-aware MLLM-as-a-judge evaluation of global layout reasoning in pixel-level and code-level image editors.">
+  <meta property="og:image" content="https://infoedit.github.io/static/images/framework.jpg">
+  <meta property="og:image:width" content="2000">
+  <meta property="og:image:height" content="775">
+  <meta property="og:image:alt" content="InfoEdit overview: dataset, editing tasks, execution and reflow-aware evaluation">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="InfoEdit: Probing Global Layout Reasoning in Infographic Editing">
+  <meta name="twitter:description" content="InfoEdit is a benchmark for infographic editing: 1,000 HTML and PowerPoint infographics across eight logical-relation families, 4,000 editing instructions over four tasks, and a reflow-aware MLLM-as-a-judge evaluation of global layout reasoning in pixel-level and code-level image editors.">
+  <meta name="twitter:image" content="https://infoedit.github.io/static/images/framework.jpg">
+
+  <!-- Google Scholar -->
+  <meta name="citation_title" content="InfoEdit: Probing Global Layout Reasoning in Infographic Editing">
+  <meta name="citation_author" content="Cheng Yang">
+  <meta name="citation_author" content="Chufan Shi">
+  <meta name="citation_author" content="Huijuan Wang">
+  <meta name="citation_author" content="Bo Shui">
+  <meta name="citation_author" content="Yaokang Wu">
+  <meta name="citation_author" content="Muzi Tao">
+  <meta name="citation_author" content="Yibo Yan">
+  <meta name="citation_author" content="Xuezhe Ma">
+  <meta name="citation_author" content="Taylor Berg-Kirkpatrick">
+  <meta name="citation_publication_date" content="2026/09/27">
+  <meta name="citation_arxiv_id" content="2609.33286">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2609.33286">
+  <meta name="citation_abstract_html_url" content="https://arxiv.org/abs/2609.33286">
+
+  <!-- Structured data: paper, dataset and code -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "headline": "InfoEdit: Probing Global Layout Reasoning in Infographic Editing",
+      "name": "InfoEdit: Probing Global Layout Reasoning in Infographic Editing",
+      "description": "InfoEdit is a benchmark for infographic editing: 1,000 HTML and PowerPoint infographics across eight logical-relation families, 4,000 editing instructions over four tasks, and a reflow-aware MLLM-as-a-judge evaluation of global layout reasoning in pixel-level and code-level image editors.",
+      "url": "https://infoedit.github.io/",
+      "sameAs": [
+        "https://arxiv.org/abs/2609.33286"
+      ],
+      "datePublished": "2026-09-27",
+      "image": "https://infoedit.github.io/static/images/framework.jpg",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Cheng Yang"
+        },
+        {
+          "@type": "Person",
+          "name": "Chufan Shi"
+        },
+        {
+          "@type": "Person",
+          "name": "Huijuan Wang"
+        },
+        {
+          "@type": "Person",
+          "name": "Bo Shui"
+        },
+        {
+          "@type": "Person",
+          "name": "Yaokang Wu"
+        },
+        {
+          "@type": "Person",
+          "name": "Muzi Tao"
+        },
+        {
+          "@type": "Person",
+          "name": "Yibo Yan"
+        },
+        {
+          "@type": "Person",
+          "name": "Xuezhe Ma"
+        },
+        {
+          "@type": "Person",
+          "name": "Taylor Berg-Kirkpatrick"
+        }
+      ],
+      "keywords": "visual coding, multimodal coding, InfoEdit, infographic editing, image editing benchmark, layout reasoning, reflow, structured visual content, multimodal foundation models, image editing evaluation, MLLM-as-a-judge, code-level editing, HTML infographics, PowerPoint, GPT-Image-2, Nano Banana, dataset"
+    },
+    {
+      "@type": "Dataset",
+      "name": "InfoEdit",
+      "alternateName": "InfoEdit: Probing Global Layout Reasoning in Infographic Editing",
+      "description": "InfoEdit is a benchmark for infographic editing: 1,000 HTML and PowerPoint infographics across eight logical-relation families, 4,000 editing instructions over four tasks, and a reflow-aware MLLM-as-a-judge evaluation of global layout reasoning in pixel-level and code-level image editors.",
+      "url": "https://infoedit.github.io/",
+      "sameAs": [
+        "https://huggingface.co/datasets/InfoEdit/InfoEdit",
+        "https://github.com/InfoEdit/InfoEdit"
+      ],
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "isAccessibleForFree": true,
+      "keywords": [
+        "visual coding",
+        "multimodal coding",
+        "InfoEdit",
+        "infographic editing",
+        "image editing benchmark",
+        "layout reasoning",
+        "reflow",
+        "structured visual content",
+        "multimodal foundation models",
+        "image editing evaluation",
+        "MLLM-as-a-judge",
+        "code-level editing",
+        "HTML infographics",
+        "PowerPoint",
+        "GPT-Image-2",
+        "Nano Banana",
+        "dataset"
+      ],
+      "creator": [
+        {
+          "@type": "Person",
+          "name": "Cheng Yang"
+        },
+        {
+          "@type": "Person",
+          "name": "Chufan Shi"
+        },
+        {
+          "@type": "Person",
+          "name": "Huijuan Wang"
+        },
+        {
+          "@type": "Person",
+          "name": "Bo Shui"
+        },
+        {
+          "@type": "Person",
+          "name": "Yaokang Wu"
+        },
+        {
+          "@type": "Person",
+          "name": "Muzi Tao"
+        },
+        {
+          "@type": "Person",
+          "name": "Yibo Yan"
+        },
+        {
+          "@type": "Person",
+          "name": "Xuezhe Ma"
+        },
+        {
+          "@type": "Person",
+          "name": "Taylor Berg-Kirkpatrick"
+        }
+      ],
+      "citation": "https://arxiv.org/abs/2609.33286",
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "text/html",
+          "contentUrl": "https://huggingface.co/datasets/InfoEdit/InfoEdit"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "InfoEdit code",
+      "codeRepository": "https://github.com/InfoEdit/InfoEdit",
+      "programmingLanguage": "Python",
+      "license": "https://opensource.org/licenses/MIT",
+      "description": "Editors and the reflow-aware evaluation for the InfoEdit benchmark."
+    }
+  ]
+}
+  </script>
   <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg?v=2">
   <link rel="alternate icon" type="image/png" sizes="32x32" href="static/images/favicon-32.png?v=2">
   <link rel="apple-touch-icon" href="static/images/apple-touch-icon.png?v=2">
@@ -463,12 +637,14 @@
     <section id="code" class="content-section alt-background">
       <div class="section-container wide">
         <span class="section-eyebrow">06 — Code-Level Editing</span>
-        <h2 class="section-title">Editing the source instead of the pixels</h2>
+        <h2 class="section-title">Visual coding: editing the source instead of the pixels</h2>
         <p class="section-description">
-          Because every InfoEdit infographic ships with HTML or PowerPoint source, we can run code-level
-          editing under the same protocol. <em>Code</em> feeds the model the source alone;
-          <em>Code + Image</em> adds the rendered original as visual grounding. Gemini, GPT and Kimi models serve
-          as code generators, and their edited outputs are rendered back into images.
+          Because every InfoEdit infographic ships with HTML or PowerPoint source, the same edits can be made at
+          the code level, turning InfoEdit into a <b>visual coding</b> and <b>multimodal coding</b> benchmark.
+          <em>Code</em> feeds the model the source alone, a visual coding setting in which the model must reason
+          about the rendered layout from code; <em>Code + Image</em> adds the rendered original as visual
+          grounding, making the task multimodal coding. Gemini, GPT and Kimi models serve as code generators, and
+          their edited outputs are rendered back into images under the same protocol.
         </p>
         <div class="table-toolbar">
           <span class="heat-legend">Lower<span class="heat-bar"></span>Higher</span>
