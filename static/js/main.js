@@ -131,9 +131,6 @@
   }
 
   /* ---------- results tables: best-value highlight, avg bars, metric toggle ---------- */
-  var HIDDEN = [1, 2, 4, 5, 7, 8, 10, 11];   // EC / CP cell indices
-  var SR_CELLS = [3, 6, 9, 12];
-
   function setupResultsTable(table) {
     var dataRows = Array.prototype.filter.call(
       table.tBodies[0].rows,
@@ -156,43 +153,35 @@
       bestCells.forEach(function (cell) { cell.classList.add('best'); });
     }
 
-    // single-hue heat: tint each numeric cell by its value, and label it for hover
+    // single-hue heat by rank within each column: best value darkest, lowest value white
     var tasks = Array.prototype.map.call(table.tHead.rows[0].cells, function (th) { return th.textContent.trim(); });
     var metrics = ['EC', 'CP', 'SR'];
+    for (var col = 1; col <= 13; col++) {
+      var distinct = [];
+      rankedRows.forEach(function (r) {
+        var v = r.cells[col] ? parseFloat(r.cells[col].textContent) : NaN;
+        if (!isNaN(v) && distinct.indexOf(v) === -1) distinct.push(v);
+      });
+      distinct.sort(function (x, y) { return y - x; });
+      rankedRows.forEach(function (r) {
+        var cell = r.cells[col];
+        if (!cell) return;
+        var v = parseFloat(cell.textContent);
+        if (isNaN(v)) return;
+        var h = distinct.length > 1 ? 1 - distinct.indexOf(v) / (distinct.length - 1) : 1;
+        cell.style.setProperty('--h', h.toFixed(3));
+      });
+    }
     dataRows.forEach(function (r) {
       var model = r.cells[0] ? r.cells[0].textContent.trim() : '';
       for (var c = 1; c < r.cells.length; c++) {
-        var cell = r.cells[c];
-        var v = parseFloat(cell.textContent);
+        var v = parseFloat(r.cells[c].textContent);
         if (isNaN(v)) continue;
-        cell.style.setProperty('--h', (Math.max(0, Math.min(100, v)) / 100).toFixed(3));
         var label = c === 13 ? 'Average SR' : tasks[Math.ceil(c / 3)] + ' · ' + metrics[(c - 1) % 3];
-        cell.title = model + ' — ' + label + ': ' + v.toFixed(1) + '%';
+        r.cells[c].title = model + ' — ' + label + ': ' + v.toFixed(1) + '%';
       }
     });
 
-    function setMode(mode) {
-      var srOnly = mode === 'sr';
-      table.classList.toggle('sr-only', srOnly);
-      var metricRow = table.tHead.rows[1];
-      Array.prototype.forEach.call(metricRow.cells, function (th, i) {
-        var col = i + 1;
-        th.style.display = srOnly && HIDDEN.indexOf(col) !== -1 ? 'none' : '';
-        if (SR_CELLS.indexOf(col) !== -1) th.classList.toggle('col-sep', srOnly);
-      });
-      Array.prototype.forEach.call(table.tHead.rows[0].cells, function (th) {
-        if (th.getAttribute('colspan') === '3' || th.dataset.fullspan) {
-          if (!th.dataset.fullspan) th.dataset.fullspan = '3';
-          th.setAttribute('colspan', srOnly ? '1' : th.dataset.fullspan);
-        }
-      });
-      dataRows.forEach(function (r) {
-        Array.prototype.forEach.call(r.cells, function (td, i) {
-          if (HIDDEN.indexOf(i) !== -1) td.style.display = srOnly ? 'none' : '';
-          if (SR_CELLS.indexOf(i) !== -1) td.classList.toggle('col-sep', srOnly);
-        });
-      });
-    }
     // click a task (or Avg.) header to sort rows by that SR within each group; click again to restore
     var body = table.tBodies[0];
     var original = Array.prototype.slice.call(body.rows);
@@ -231,7 +220,6 @@
       th.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); run(); } });
     });
 
-    return setMode;
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('table.results-table'), setupResultsTable);

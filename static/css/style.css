@@ -600,15 +600,15 @@ table.results-table tbody td:not(.model-col) {
   color: #3a4050;
   background: rgba(74, 86, 201, calc(var(--h, 0) * 0.30));
 }
-table.results-table tbody td.sr { font-weight: 600; color: #1f2433; }
-table.results-table tbody td.best { color: #1f2433; font-weight: 800; }
+table.results-table tbody td.sr { font-weight: 400; color: #1f2433; }
+table.results-table tbody td.best { color: #1f2433; font-weight: 400; }
 table.results-table tbody td.best::after { content: none; }
 table.results-table thead th:last-child { color: var(--primary); }
 table.results-table tbody td.avg {
-  font-weight: 800;
-  color: var(--primary);
+  font-weight: 400;
+  color: #1f2433;
   min-width: 70px;
-  background: rgba(74, 86, 201, calc(var(--h, 0) * 0.38));
+  background: rgba(74, 86, 201, calc(var(--h, 0) * 0.30));
 }
 table.results-table tr.group-header td {
   background: #fafbfd !important;
@@ -626,7 +626,7 @@ table.data-table.results-table tbody tr:not(.group-header):hover td:not(.model-c
   background: rgba(74, 86, 201, calc(var(--h, 0) * 0.30 + 0.04));
 }
 table.data-table.results-table tbody tr:not(.group-header):hover td.avg {
-  background: rgba(74, 86, 201, calc(var(--h, 0) * 0.38 + 0.04));
+  background: rgba(74, 86, 201, calc(var(--h, 0) * 0.30 + 0.04));
 }
 table.results-table tr.highlight-row td.model-col { background: #fff; box-shadow: inset 3px 0 0 var(--primary-soft), inset -1px 0 0 #e9ebf2; }
 table.results-table tbody tr:last-child td { border-bottom: none; }
@@ -643,7 +643,7 @@ table.results-table thead th.sortable.sorted::after { content: "\2193"; color: v
 table.results-table thead th.sortable:focus-visible { outline: 2px solid var(--primary-soft); outline-offset: -2px; }
 table.results-table tr.ref-row td { border-top: 1px dashed #cfd4e4; }
 table.results-table tr.ref-row td.model-col { font-style: italic; color: #6b7285; font-weight: 500; }
-table.results-table tr.ref-row td:not(.model-col) { color: #6b7285; }
+table.results-table tr.ref-row td:not(.model-col) { color: #6b7285; background: #fff; }
 .metric-switch {
   border: 1px solid #d6dbea;
   background: #fff;
