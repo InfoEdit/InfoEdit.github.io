@@ -644,6 +644,21 @@ table.results-table thead th.sortable:focus-visible { outline: 2px solid var(--p
 table.results-table tr.ref-row td { border-top: 1px dashed #cfd4e4; }
 table.results-table tr.ref-row td.model-col { font-style: italic; color: #6b7285; font-weight: 500; }
 table.results-table tr.ref-row td:not(.model-col) { color: #6b7285; }
+.metric-switch {
+  border: 1px solid #d6dbea;
+  background: #fff;
+  color: var(--primary);
+  border-radius: 30px;
+  padding: 0.42rem 1rem;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.metric-switch:hover { border-color: var(--primary-soft); background: #f4f6ff; }
+.metric-switch[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+.metric-switch:focus-visible { outline: 2px solid var(--primary-soft); outline-offset: 2px; }
 .heat-legend {
   display: inline-flex;
   align-items: center;

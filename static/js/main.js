@@ -236,16 +236,14 @@
 
   Array.prototype.forEach.call(document.querySelectorAll('table.results-table'), function (table) {
     var setMode = setupResultsTable(table);
-    var toggle = document.querySelector('.toggle-group[data-table="' + table.id + '"]');
-    if (!toggle) return;
-    var initial = toggle.querySelector('button.active');
-    if (initial) setMode(initial.dataset.mode);
-    Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (b) {
-      b.addEventListener('click', function () {
-        Array.prototype.forEach.call(toggle.querySelectorAll('button'), function (o) { o.classList.remove('active'); });
-        b.classList.add('active');
-        setMode(b.dataset.mode);
-      });
+    setMode('sr');
+    var btn = document.querySelector('.metric-switch[data-table="' + table.id + '"]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var full = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', full ? 'true' : 'false');
+      btn.textContent = full ? 'Hide EC / CP' : 'Show EC / CP';
+      setMode(full ? 'full' : 'sr');
     });
   });
 
