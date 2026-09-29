@@ -35,7 +35,8 @@
           <li><a href="#benchmark">Benchmark</a></li>
           <li><a href="#tasks">Tasks</a></li>
           <li><a href="#evaluation">Evaluation</a></li>
-          <li><a href="#results">Results</a></li>
+          <li><a href="#results">Pixel-Level</a></li>
+          <li><a href="#code">Code-Level</a></li>
           <li><a href="#findings">Key Findings</a></li>
           <li><a href="#citation">Citation</a></li>
         </ul>
@@ -240,11 +241,23 @@
           families on one canvas, so the shares above sum to more than 100%.
         </p>
 
-        <h3 class="subsection-title">Data examples</h3>
-        <p class="body-text" style="text-align:center;">
-          Each example shows the source infographic, its instruction, and the expected versus an unexpected
-          edited result. Click any panel to open it full size.
+
+      </div>
+    </section>
+
+    <!-- ==================== TASKS ==================== -->
+    <section id="tasks" class="content-section">
+      <div class="section-container wide">
+        <span class="section-eyebrow">03 — Editing Tasks</span>
+        <h2 class="section-title">Four tasks, increasing perturbation scope</h2>
+        <p class="section-description">
+          From a text-level change to a canvas-level restructuring: <b>Expand-Text</b>, <b>Insert-Element</b>,
+          <b>Swap-Block</b> and <b>Reshape-Canvas</b>. For each of the 1,000 infographics, annotators write one
+          instruction per task — 4,000 pairs in total — and every instruction is verified to be feasible and
+          <b>reflow-inducing</b>. Each example shows the source infographic, its instruction, and the expected
+          versus an unexpected edited result; click any panel to open it full size.
         </p>
+
         <div class="card-grid cols-2 reveal" style="gap:0.9rem;">
           <a class="card" style="padding:0.6rem;" href="static/images/examples/143.jpg" target="_blank"
             rel="noopener"><img src="static/images/examples/143.jpg"
@@ -264,46 +277,6 @@
               style="border-radius:8px;"></a>
         </div>
 
-      </div>
-    </section>
-
-    <!-- ==================== TASKS ==================== -->
-    <section id="tasks" class="content-section">
-      <div class="section-container wide">
-        <span class="section-eyebrow">03 — Editing Tasks</span>
-        <h2 class="section-title">Four tasks, increasing perturbation scope</h2>
-        <p class="section-description">
-          From a text-level change to a canvas-level restructuring. For each of the 1,000 infographics,
-          annotators write one instruction per task — 4,000 pairs in total — and every instruction is
-          verified to be feasible and <b>reflow-inducing</b>.
-        </p>
-
-        <div class="card-grid cols-4 reveal">
-          <div class="card">
-            <h4><span class="card-index">1</span>Expand-Text</h4>
-            <p>Lengthens the text of one target element, forcing the host to grow while its neighbors absorb
-              the displacement through reflow.</p>
-            <span class="card-meta">Magnitude: 5–10 / 11–20 / 21–30 appended words</span>
-          </div>
-          <div class="card">
-            <h4><span class="card-index">2</span>Insert-Element</h4>
-            <p>Adds one or more new elements into an existing logical-relation block, so the host structure
-              must re-route connectors and redistribute space among siblings.</p>
-            <span class="card-meta">Magnitude: 1 / 2–3 / 4–5 inserted elements</span>
-          </div>
-          <div class="card">
-            <h4><span class="card-index">3</span>Swap-Block</h4>
-            <p>Exchanges the canvas positions of two logical-relation blocks as whole units, requiring the
-              rest of the canvas to resize and re-align around the new arrangement.</p>
-            <span class="card-meta">Magnitude: 1 / 2 / 3 swapped block pairs</span>
-          </div>
-          <div class="card">
-            <h4><span class="card-index">4</span>Reshape-Canvas</h4>
-            <p>Re-renders the infographic at a different aspect ratio, demanding a canvas-level reflow in
-              which every block is re-positioned, re-scaled and re-aligned.</p>
-            <span class="card-meta">No discrete magnitude axis</span>
-          </div>
-        </div>
 
       </div>
     </section>
@@ -320,54 +293,12 @@
           <b>content preservation</b> fields, plus an overall verdict equal to their conjunction.
         </p>
 
-        <div class="card-grid cols-2 reveal">
-          <div class="card">
-            <h4><span class="card-index">EC</span>Edit Compliance</h4>
-            <p>
-              <b>Expand-Text</b> requires a moderately longer, on-topic body text fully rendered inside the
-              canvas. <b>Insert-Element</b> requires the new element at the named location with its content
-              fully rendered. <b>Swap-Block</b> requires the two named blocks to exchange canvas locations as
-              whole units, each carrying its content unchanged. <b>Reshape-Canvas</b> requires the canvas to
-              match the target aspect ratio.
-            </p>
-          </div>
-          <div class="card">
-            <h4><span class="card-index">CP</span>Content Preservation</h4>
-            <p>
-              Because InfoEdit instructions are reflow-inducing, CP does <em>not</em> require pixel-level
-              immobility. It checks whether unedited source content remains intact after necessary reflow —
-              repositioning, resizing, re-alignment and connector rerouting are all allowed. Deletion,
-              off-canvas displacement, cropping, occlusion, rewriting, style drift and broken structural
-              links count as failures.
-            </p>
-          </div>
-        </div>
-
-        <h3 class="subsection-title">Is the judge trustworthy?</h3>
         <p class="body-text">
-          We compare judge verdicts with expert human judgments across model capability levels. For
-          GPT-Image-2 we sample 800 triples — exactly 200 per editing task — and three expert annotators
-          independently label each as success or failure, with the human majority as ground truth.
+          <b>Is the judge trustworthy?</b> On 800 GPT-Image-2 triples (200 per task) labeled by three expert
+          annotators, Gemini-3.1-Pro agrees with the human majority on 92.0% of cases, against 0.940
+          inter-annotator agreement. A cross-vendor judge (Claude-Opus-4.7) and five repeated runs give the
+          same picture.
         </p>
-        <div class="card-grid cols-3 reveal">
-          <div class="card">
-            <h4><span class="card-index">✓</span>0.920 agreement</h4>
-            <p>Gemini-3.1-Pro agrees with the human majority on 92.0% of GPT-Image-2 cases, against 0.940
-              inter-annotator agreement. Agreement is stable across tasks (0.905–0.930) and across easy, medium
-              and hard edits (0.943 / 0.912 / 0.890).</p>
-          </div>
-          <div class="card">
-            <h4><span class="card-index">⇄</span>Judge-independent</h4>
-            <p>Replacing Gemini-3.1-Pro with the cross-vendor Claude-Opus-4.7 yields 0.914 human agreement on
-              GPT-Image-2 outputs and 0.928 on Nanobanana-2 — close to Gemini's 0.920 and 0.934.</p>
-          </div>
-          <div class="card">
-            <h4><span class="card-index">σ</span>Run-stable</h4>
-            <p>Across five repeated Gemini-3.1-Pro evaluations, agreement is 0.924 ± 0.007 on GPT-Image-2 and
-              0.936 ± 0.008 on Nanobanana-2. Conclusions do not hinge on a single output model, judge family or
-              evaluation run.</p>
-          </div>
-        </div>
 
         <details class="disclosure reveal">
           <summary>MLLM-as-a-judge prompts — one rubric per editing task</summary>
@@ -395,8 +326,8 @@
     <!-- ==================== RESULTS ==================== -->
     <section id="results" class="content-section">
       <div class="section-container wide">
-        <span class="section-eyebrow">05 — Results</span>
-        <h2 class="section-title">Eight frontier editors on InfoEdit</h2>
+        <span class="section-eyebrow">05 — Pixel-Level Editing</span>
+        <h2 class="section-title">Eight frontier image editors</h2>
         <p class="section-description">
           All models are queried with the 4,000 (infographic, instruction) pairs under each model's
           recommended inference settings, and every triple is judged by Gemini-3.1-Pro.
@@ -609,8 +540,100 @@
           </figcaption>
         </figure>
 
-        <h3 class="subsection-title">Pixel-level versus code-level editing</h3>
+        <h3 class="subsection-title">Is localization the bottleneck? No.</h3>
         <p class="body-text">
+          Swap-Block failures could stem from two causes: the model cannot execute the structural verb, or it
+          cannot resolve which two blocks the instruction names. To separate them, we annotate the input image
+          with <b>interactive selection hints</b> — each swap pair marked with a bounding box and a matching
+          numeric label — and tell the model the marks are localization guidance that must not appear in the
+          output.
+        </p>
+        <div class="table-wrapper reveal" style="max-width:640px;margin-left:auto;margin-right:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="model-col">Model</th>
+                <th>Hint</th>
+                <th>EC</th>
+                <th>CP</th>
+                <th>SR</th>
+                <th>ΔSR</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="model-col" rowspan="2">GPT-Image-2</td>
+                <td>w/o</td>
+                <td>29.0</td>
+                <td>79.2</td>
+                <td class="sr">25.5</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>34.2</td>
+                <td>92.7</td>
+                <td class="sr">34.9</td>
+                <td class="best">+9.4</td>
+              </tr>
+              <tr>
+                <td class="model-col" rowspan="2">Nanobanana-Pro</td>
+                <td>w/o</td>
+                <td>36.5</td>
+                <td>79.8</td>
+                <td class="sr">32.0</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>39.4</td>
+                <td>83.6</td>
+                <td class="sr">35.2</td>
+                <td class="best">+3.2</td>
+              </tr>
+              <tr>
+                <td class="model-col" rowspan="2">Nanobanana-2</td>
+                <td>w/o</td>
+                <td>30.0</td>
+                <td>72.1</td>
+                <td class="sr">24.0</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>w/</td>
+                <td>34.2</td>
+                <td>79.1</td>
+                <td class="sr">27.5</td>
+                <td class="best">+3.5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-caption" style="max-width:640px;margin-left:auto;margin-right:auto;">
+          <b>Effect of interactive selection hints on Swap-Block.</b> The gain is consistently modest
+          (+3.2 to +9.4 SR), and even with perfect localization no model exceeds 35% SR. The bottleneck is
+          the reflow operation itself, not target localization.
+        </p>
+        <figure class="figure framed reveal">
+          <img src="static/images/hint.jpg"
+            alt="Original infographic next to a hinted version where the two blocks to swap are marked with magenta bounding boxes labelled (1).">
+          <figcaption>
+            <b>Interactive selection hint for Swap-Block.</b> Matching numeric labels indicate the two blocks
+            to be exchanged. The boxes are used only for target localization and should not appear in the
+            edited output.
+          </figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== CODE-LEVEL ==================== -->
+    <section id="code" class="content-section alt-background">
+      <div class="section-container wide">
+        <span class="section-eyebrow">06 — Code-Level Editing</span>
+        <h2 class="section-title">Editing the source instead of the pixels</h2>
+        <p class="section-description">
           Because every InfoEdit infographic ships with HTML or PowerPoint source, we can run code-level
           editing under the same protocol. <em>Code</em> feeds the model the source alone;
           <em>Code + Image</em> adds the rendered original as visual grounding. Gemini, GPT and Kimi models serve
@@ -819,98 +842,13 @@
           Insert-Element and much stronger on Swap-Block (EC 29.0 → 69.4, SR 25.5 → 62.8), because source
           code makes named blocks directly addressable.
         </p>
-
-        <h3 class="subsection-title">Is localization the bottleneck? No.</h3>
-        <p class="body-text">
-          Swap-Block failures could stem from two causes: the model cannot execute the structural verb, or it
-          cannot resolve which two blocks the instruction names. To separate them, we annotate the input image
-          with <b>interactive selection hints</b> — each swap pair marked with a bounding box and a matching
-          numeric label — and tell the model the marks are localization guidance that must not appear in the
-          output.
-        </p>
-        <div class="table-wrapper reveal" style="max-width:640px;margin-left:auto;margin-right:auto;">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th class="model-col">Model</th>
-                <th>Hint</th>
-                <th>EC</th>
-                <th>CP</th>
-                <th>SR</th>
-                <th>ΔSR</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="model-col" rowspan="2">GPT-Image-2</td>
-                <td>w/o</td>
-                <td>29.0</td>
-                <td>79.2</td>
-                <td class="sr">25.5</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>w/</td>
-                <td>34.2</td>
-                <td>92.7</td>
-                <td class="sr">34.9</td>
-                <td class="best">+9.4</td>
-              </tr>
-              <tr>
-                <td class="model-col" rowspan="2">Nanobanana-Pro</td>
-                <td>w/o</td>
-                <td>36.5</td>
-                <td>79.8</td>
-                <td class="sr">32.0</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>w/</td>
-                <td>39.4</td>
-                <td>83.6</td>
-                <td class="sr">35.2</td>
-                <td class="best">+3.2</td>
-              </tr>
-              <tr>
-                <td class="model-col" rowspan="2">Nanobanana-2</td>
-                <td>w/o</td>
-                <td>30.0</td>
-                <td>72.1</td>
-                <td class="sr">24.0</td>
-                <td>—</td>
-              </tr>
-              <tr>
-                <td>w/</td>
-                <td>34.2</td>
-                <td>79.1</td>
-                <td class="sr">27.5</td>
-                <td class="best">+3.5</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="table-caption" style="max-width:640px;margin-left:auto;margin-right:auto;">
-          <b>Effect of interactive selection hints on Swap-Block.</b> The gain is consistently modest
-          (+3.2 to +9.4 SR), and even with perfect localization no model exceeds 35% SR. The bottleneck is
-          the reflow operation itself, not target localization.
-        </p>
-        <figure class="figure framed reveal">
-          <img src="static/images/hint.jpg"
-            alt="Original infographic next to a hinted version where the two blocks to swap are marked with magenta bounding boxes labelled (1).">
-          <figcaption>
-            <b>Interactive selection hint for Swap-Block.</b> Matching numeric labels indicate the two blocks
-            to be exchanged. The boxes are used only for target localization and should not appear in the
-            edited output.
-          </figcaption>
-        </figure>
-
       </div>
     </section>
 
     <!-- ==================== KEY FINDINGS ==================== -->
-    <section id="findings" class="content-section alt-background">
+    <section id="findings" class="content-section">
       <div class="section-container">
-        <span class="section-eyebrow">06 — Key Findings</span>
+        <span class="section-eyebrow">07 — Key Findings</span>
         <h2 class="section-title">What InfoEdit reveals</h2>
 
         <div class="findings-list reveal">
@@ -928,23 +866,13 @@
             <span class="finding-num">02</span>
             <div>
               <h4>Swap-Block is essentially unsolved</h4>
-              <p>No editor exceeds <span class="num-hl">36.5%</span> EC or <span class="num-hl">32.0%</span> SR
-                on Swap-Block, while CP can stay comparatively high — compliance and preservation decouple when
-                whole blocks must move.</p>
+              <p>No editor exceeds <span class="num-hl">32.0%</span> SR on Swap-Block, and marking the swap
+                targets with bounding boxes lifts SR by only <span class="num-hl">+3.2 to +9.4</span> points:
+                the bottleneck is reflow, not grounding.</p>
             </div>
           </div>
           <div class="finding">
             <span class="finding-num">03</span>
-            <div>
-              <h4>The bottleneck is reflow, not grounding</h4>
-              <p>Marking the swap targets with bounding boxes lifts SR by only
-                <span class="num-hl">+3.2 to +9.4</span> points, and no model passes
-                <span class="num-hl">35%</span> even under perfect target localization.
-              </p>
-            </div>
-          </div>
-          <div class="finding">
-            <span class="finding-num">04</span>
             <div>
               <h4>Correct edits that silently break the layout</h4>
               <p>On Reshape-Canvas the top three models achieve <span class="num-hl">87–96%</span> EC but only
@@ -954,7 +882,7 @@
             </div>
           </div>
           <div class="finding">
-            <span class="finding-num">05</span>
+            <span class="finding-num">04</span>
             <div>
               <h4>Code-level editing is a complementary pathway</h4>
               <p>Kimi-K3 over source code plus the rendered image reaches
@@ -962,26 +890,6 @@
                 doubles Swap-Block SR (<span class="num-hl">25.5 → 62.8</span>). The two pathways have different
                 strengths, pointing toward hybrid systems.
               </p>
-            </div>
-          </div>
-          <div class="finding">
-            <span class="finding-num">06</span>
-            <div>
-              <h4>Open-weight editors are far from the frontier</h4>
-              <p>HunyuanImage-3.0, Qwen-Image-Edit and FLUX.2-klein-base-9B reach
-                <span class="num-hl">3.2%</span>, <span class="num-hl">0.4%</span> and
-                <span class="num-hl">0.0%</span> average SR, with 0% on three of the four tasks — a concrete
-                target for improving open-weight editors.
-              </p>
-            </div>
-          </div>
-          <div class="finding">
-            <span class="finding-num">07</span>
-            <div>
-              <h4>Reflow is multi-faceted</h4>
-              <p>Insert-Element and Swap-Block stress correct placement; Expand-Text stresses neighbor-aware
-                adjustment; Reshape-Canvas stresses global style and structure preservation. Reflow is not one
-                operation but a family of them.</p>
             </div>
           </div>
         </div>
