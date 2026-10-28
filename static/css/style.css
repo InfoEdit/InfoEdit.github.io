@@ -243,12 +243,20 @@ header.site-header {
   background-clip: text;
   color: transparent;
 }
-.venue-badge {
+.publication-venue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin: 1.4rem 0 1.1rem;
+}
+.publication-venue .venue-logo { height: 40px; width: auto; }
+.publication-venue .venue-pill {
   display: inline-block;
-  margin: 0.9rem 0 0;
-  padding: 0.3rem 0.95rem;
+  padding: 0.3rem 0.9rem;
   border-radius: 999px;
-  background: var(--primary);
+  background: #d7263d;
   color: #fff;
   font-size: 0.95rem;
   font-weight: 700;
